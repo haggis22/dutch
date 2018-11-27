@@ -275,7 +275,7 @@
             words.push(new Phrase(1, 'tot ziens', 'see you'));
             words.push(new Preposition(1, 'tot', 'until'));
             words.push(new Phrase(1, 'doei', 'bye'));
-            words.push(new Phrase(2, ['alsjeblieft', 'alstublieft'], 'here you are'));
+            words.push(new Phrase(2, ['alsjeblieft', 'alstublieft'], 'here you are (handing over change)'));
             words.push(new Phrase(2, ['alsjeblieft', 'alstublieft'], 'please'));
             words.push(new Phrase(2, 'dank je wel', 'thank you'));
             words.push(new Phrase(2, 'ja', 'yes'));
@@ -304,8 +304,7 @@
             words.push(new Noun(3, 'de advocaat', 'the lawyer'));
             words.push(new Noun(3, 'de dokter', 'the doctor'));
             words.push(new Noun(3, 'de ober', 'the waiter'));
-            words.push(new Noun(3, 'de politieman', 'the police officer'));
-            words.push(new Noun(3, 'de agent', 'the police officer'));
+            words.push(new Noun(3, ['de politieman', 'de agent'], 'the police officer'));
             words.push(new Noun(3, 'de kapper', 'the hairdresser'));
             words.push(new Noun(3, 'de directeur', 'the director'));
             words.push(new Noun(3, 'de boekhouder', 'the accountant'));
@@ -331,9 +330,9 @@
             words.push(new Noun(4, 'het vlees', 'the meat'));
             words.push(new Noun(4, 'de kip', 'the chicken'));
             words.push(new Noun(4, 'de friet', 'the French fries'));
-            words.push(new Noun(4, 'frietje met', 'French fries with mayonnaise'));
+//            words.push(new Noun(4, 'frietje met', 'French fries with mayonnaise'));
             words.push(new Noun(4, 'de frikadel', 'Dutch meat sausage'));
-            words.push(new Noun(4, 'de kroket', 'Dutch fried ragout bar'));
+//            words.push(new Noun(4, 'de kroket', 'Dutch fried ragout bar'));
             words.push(new Noun(4, 'de pannenkoek', 'the pancake'));
             words.push(new Noun(4, 'de stroopwafel', 'the syrup waffle'));
             words.push(new Noun(4, 'drop', 'liquorice'));
@@ -345,8 +344,7 @@
             words.push(new Noun(5, 'de bloem', 'the flower'));
             words.push(new Adverb(5, 'waarom', 'why'));
             words.push(new Adverb(5, 'daarom', 'that’s why'));
-            words.push(new Phrase(5, 'want', 'because'));
-            words.push(new Phrase(5, 'omdat', 'because'));
+            words.push(new Phrase(5, ['want', 'omdat'], 'because'));
             words.push(new Phrase(5, 'maar', 'but'));
             words.push(new Preposition(5, 'behalve', 'except'));
             words.push(new Noun(5, 'de fiets', 'the bike'));
@@ -496,7 +494,7 @@
             words.push(new Noun(13, 'de taal', 'the language'));
             words.push(new Verb(13, 'een taal leren', 'to learn a language'));
             words.push(new Verb(13, 'sporten', 'to exercise'));
-            words.push(new Verb(13, 'hardlopen', 'to run'));
+            words.push(new Verb(13, ['hardlopen', 'rennen'], 'to run'));
             words.push(new Verb(13, 'wandelen', 'to go for a walk'));
             words.push(new Verb(13, 'tennissen', 'to play tennis'));
             words.push(new Verb(13, 'hockeyen', 'to play hockey'));
@@ -507,7 +505,7 @@
             words.push(new Phrase(13, 'dronken zijn', 'being drunk'));
             words.push(new Verb(13, 'koken', 'to cook'));
             words.push(new Noun(13, 'kunst', 'art'));
-            words.push(new Noun(13, 'verjaardag', 'the birthday'));
+            words.push(new Noun(13, 'de verjaardag', 'the birthday'));
             words.push(new Verb(13, 'een verjaardag vieren', 'to celebrate a birthday'));
             words.push(new Phrase(13, 'hij is jarig', 'it’s his birthday'));
             words.push(new Verb(13, 'zingen', 'to sing'));
@@ -515,12 +513,13 @@
             words.push(new Verb(13, 'winkelen', 'to go shopping'));
             words.push(new Noun(14, 'Amsterdam', 'Amsterdam'));
             words.push(new Noun(14, 'de gracht', 'the canal'));
-            words.push(new Noun(14, 'het grachtenpand', 'the canal house'));
+//            words.push(new Noun(14, 'het grachtenpand', 'the canal house'));
             words.push(new Noun(14, 'de woonboot', 'the house boat'));
-            words.push(new Verb(14, 'wonen', 'to live'));
+            words.push(new Verb(14, 'wonen', 'to live (in a place)'));
+            words.push(new Verb(14, 'leven', 'to live (be alive)'));
             words.push(new Noun(14, 'het paleis', 'the palace'));
             words.push(new Noun(14, 'pont', 'the ferry'));
-            words.push(new Noun(14, 'de rondvaart', 'the canal cruise'));
+//            words.push(new Noun(14, 'de rondvaart', 'the canal cruise'));
             words.push(new Noun(14, 'het museum', 'the museum'));
             words.push(new Noun(14, 'het concert', 'the concert'));
             words.push(new Noun(14, 'het gebouw', 'the building'));
@@ -529,14 +528,14 @@
             words.push(new Noun(14, 'de brug', 'the bridge'));
             words.push(new Noun(14, 'het eiland', 'the island'));
             words.push(new Noun(14, 'de ring', 'the ring, the ring road'));
-            words.push(new Noun(14, 'de coffeeshop', 'bar where soft drugs is sold'));
+//            words.push(new Noun(14, 'de coffeeshop', 'bar where soft drugs is sold'));
             words.push(new Noun(14, 'het stadion', 'the stadium'));
             words.push(new Noun(14, 'het hoofdkantoor', 'the head office'));
-            words.push(new Noun(14, 'de wallen', 'the red light district'));
+//            words.push(new Noun(14, 'de wallen', 'the red light district'));
             words.push(new Noun(14, 'de hoer', 'the prostitute'));
             words.push(new Noun(14, 'het park', 'the park'));
             words.push(new Noun(14, 'het bos', 'the forest'));
-            words.push(new Noun(15, 'de woning', 'the house'));
+            words.push(new Noun(15, ['de woning', 'het huis'], 'the house'));
             words.push(new Noun(15, 'de deur', 'the door'));
             words.push(new Noun(15, 'het raam', 'the window'));
             words.push(new Noun(15, 'de stoel', 'the chair'));
@@ -608,7 +607,7 @@
             words.push(new Noun(17, 'het overhemd', 'the shirt'));
             words.push(new Noun(17, 'de blouse', 'the blouse, the shirt'));
             words.push(new Noun(17, 'het pak', 'the suit'));
-            words.push(new Noun(17, 'het, de colbert', 'the suit jacket'));
+            words.push(new Noun(17, ['het colbert', 'de colbert'], 'the suit jacket'));
             words.push(new Noun(17, 'de stropdas', 'the tie'));
             words.push(new Noun(17, 'de strik', 'the bow'));
             words.push(new Noun(17, 'de pyjama', 'the pyjamas'));
@@ -650,24 +649,23 @@
             words.push(new Noun(19, 'de baan', 'the job'));
             words.push(new Verb(19, 'veranderen', 'to change'));
             words.push(new Noun(19, 'de brief', 'the letter'));
-            words.push(new Noun(19, 'de sollicitatiebrief', 'the application letter'));
-            words.push(new Noun(19, 'het cv (curriculum vitae)', 'the resume'));
+            //words.push(new Noun(19, 'de sollicitatiebrief', 'the application letter'));
+//            words.push(new Noun(19, 'het cv (curriculum vitae)', 'the resume'));
             words.push(new Noun(19, 'de opleiding', 'the education'));
             words.push(new Noun(19, 'de ervaring', 'the experience'));
-            words.push(new Noun(19, 'het gesprek', 'the conversation, the interview'));
-            words.push(new Noun(19, 'het sollicitatiegesprek', 'the job interview'));
-            words.push(new Noun(19, 'het bedrijf', 'the company'));
-            words.push(new Noun(19, 'de zaak', 'the company'));
+//            words.push(new Noun(19, 'het gesprek', 'the conversation, the interview'));
+//            words.push(new Noun(19, 'het sollicitatiegesprek', 'the job interview'));
+            words.push(new Noun(19, ['het bedrijf', 'de zaak'], 'the company'));
             words.push(new Noun(19, 'het salaris', 'the salary'));
             words.push(new Adjective(19, 'bruto', 'gross (money)'));
             words.push(new Adjective(19, 'netto', 'net (money)'));
             words.push(new Noun(19, 'de belasting', 'the tax'));
-            words.push(new Noun(19, 'het vakantiegeld', 'the vacation bonus'));
-            words.push(new Noun(19, 'de auto van de zaak', 'the company car'));
+//            words.push(new Noun(19, 'het vakantiegeld', 'the vacation bonus'));
+//            words.push(new Noun(19, 'de auto van de zaak', 'the company car'));
             words.push(new Noun(19, 'het pensioen', 'the pension'));
-            words.push(new Noun(19, 'de reiskosten', 'the travel expenses'));
+//            words.push(new Noun(19, 'de reiskosten', 'the travel expenses'));
             words.push(new Noun(19, 'de vergoeding', 'the compensation'));
-            words.push(new Noun(19, 'de reiskostenvergoeding', 'the compensation for travel expenses'));
+//            words.push(new Noun(19, 'de reiskostenvergoeding', 'the compensation for travel expenses'));
             words.push(new Noun(19, 'de collega', 'the colleague'));
             words.push(new Verb(19, 'aannemen', 'to hire'));
             words.push(new Verb(19, 'ontslaan', 'to fire'));
@@ -677,8 +675,8 @@
             words.push(new Noun(20, 'mama', 'mom'));
             words.push(new Noun(20, 'de broer', 'the brother'));
             words.push(new Noun(20, 'de zus', 'the sister'));
-            words.push(new Noun(20, 'de opa', 'the grandfather'));
-            words.push(new Noun(20, 'de oma', 'the grandmother'));
+            words.push(new Noun(20, ['de opa', 'de grootvader'], 'the grandfather'));
+            words.push(new Noun(20, ['de oma', 'de grootmoeder'], 'the grandmother'));
             words.push(new Noun(20, 'de tante', 'the aunt'));
             words.push(new Noun(20, 'de oom', 'the uncle'));
             words.push(new Noun(20, 'de neef', 'the cousin, the nephew'));
@@ -729,7 +727,7 @@
             words.push(new Noun(22, 'het doel', 'the goal (frame)'));
             words.push(new Noun(22, 'het doelpunt', 'the goal (scored)'));
             words.push(new Noun(22, 'het elftal', 'the football team'));
-            words.push(new Adjective(22, 'oranje', 'orange'));
+            words.push(new Adjective(22, 'oranje', 'orange (color)'));
             words.push(new Noun(22, 'oranje', 'the dutch football team'));
             words.push(new Noun(22, 'de spits', 'the striker'));
             words.push(new Noun(22, 'de middenvelder', 'the midfielder'));
@@ -781,12 +779,12 @@
             words.push(new Verb(23, 'bouwen', 'to build'));
             words.push(new Verb(23, 'blijven', 'to stay'));
             words.push(new Noun(24, 'het weer', 'the weather'));
-            words.push(new Phrase(24, 'wat voor weer wordt het?', 'what will be the weather?'));
+            words.push(new Phrase(24, ['wat voor weer wordt het?'], ['wat voor weer wordt het'], 'what will be the weather?'));
             words.push(new Noun(24, 'het weerbericht', 'the weather forecast'));
             words.push(new Noun(24, 'het bericht', 'the message'));
-            words.push(new Phrase(24, 'lekker weer, hè', 'nice weather isn’t it?'));
+//            words.push(new Phrase(24, 'lekker weer, hè', 'nice weather isn’t it?'));
             words.push(new Phrase(24, 'zeker', '(for) sure'));
-            words.push(new Phrase(24, 'mooi weer', 'nice weather'));
+            words.push(new Phrase(24, ['mooi weer', 'lekker weer'], 'nice weather'));
             words.push(new Noun(24, 'vandaag', 'today'));
             words.push(new Noun(24, 'de temperatuur', 'the temperature'));
             words.push(new Noun(24, 'de thermometer', 'the thermometer'));
@@ -902,7 +900,8 @@
                 // give me extra work on ones I have missed already
                 for (let word of options)
                 {
-                    for (let count=0; count < word.numWrong - word.numRight; count++)
+                    // we're going to add it 2 times for every time we got it wrong
+                    for (let count=0; count < 2 * (word.numWrong - word.numRight); count++)
                     {
                         missedOptions.push(word);
                     }
@@ -977,7 +976,7 @@
 
                 if (key == 13)
                 {
-                    checkAnswer(document.getElementById('guess').value);
+                    checkAnswer(document.getElementById('guess').value.trim());
                 }
 
             });
