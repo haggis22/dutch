@@ -1,4 +1,6 @@
 .vs/
-ConsoleApplication1/
-Dutch.sln
-dutch.html
+LearnDutch/node_modules/
+packages/
+LearnDutch/bin/
+LearnDutch/obj/
+**/*.user
