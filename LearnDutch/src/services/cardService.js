@@ -24,13 +24,6 @@
 
                 let options = [];
 
-/*
-                let lessonID = parseInt($('#txtLessonID').val(), 10);
-                if (!isNaN(lessonID)) {
-                    options = options.filter(w => w.lessonID == lessonID);
-                }
-*/
-
                 for (let word of words)
                 {
                     // give me extra work on ones I have missed already
@@ -41,6 +34,12 @@
                         options.push(word);
                     }
 
+                }
+
+                let lessonID = parseInt(viewService.lessonID, 10);
+                if (!isNaN(lessonID))
+                {
+                    options = options.filter(o => o.lessonID == lessonID);
                 }
 
                 if (options.length == 0) {

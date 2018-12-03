@@ -23,7 +23,10 @@
             <select ng-model="viewService.mode" 
                     ng-options="mode as mode.display for mode in viewService.modeOptions"></select>
 
-            <label>Lesson: <input type="text" id="txtLessonID" /></label>
+            <label>Lesson: <input type="text" 
+                                  class="lesson"
+                                  ng-model="viewService.lessonID"/>
+            </label>
 
         </span>
 
@@ -59,78 +62,6 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.js"></script>
     <script src="./dutch.js"></script>
-
-    <script>
-
-
-/*
-        (function () {
-
-
-            let currentWord = null;
-
-
-            $('#test-me').on('click', testMe);
-
-
-
-
-            function testMe() {
-
-
-                currentWord = chooseWord();
-
-                let mode = $('#selMode option:checked').val();
-
-                switch (mode) {
-
-                    case MODE.SIMPLE_PAST:
-                        currentWord.correctAnswers = currentWord.simplePast.slice();
-                        break;
-
-                    case MODE.PAST_PERFECT:
-                        currentWord.correctAnswers = [currentWord.pastPerfect];
-                        break;
-
-                    default:
-                        currentWord.correctAnswers = Array.isArray(currentWord.dutch) ? currentWord.dutch : [currentWord.dutch];
-                        break;
-
-                }
-
-
-                $('.card.question .word').text(currentWord.english);
-                $('.card.question .part').text('(' + currentWord.getPart() + ')');
-
-                // clear the answer
-                let answerCard = $('.card.answer span');
-                answerCard.text('');
-                answerCard.removeClass('success');
-                answerCard.removeClass('failure');
-
-
-                // clear the guess
-                let guessBox = $('#guess');
-                guessBox.val('');
-                guessBox.focus();
-
-                // stop any possible enter key from revealing the answer prematurely
-                event.preventDefault();
-
-            }
-
-            $('#guess').on('keyup', function (event) {
-
-
-            });
-
-
-
-        })();
-
-*/
-
-    </script>
 
 </body>
 </html>
