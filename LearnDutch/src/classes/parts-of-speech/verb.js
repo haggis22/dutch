@@ -9,8 +9,8 @@
             class Verb extends Word {
                 constructor(lessonID, dutch, english, simplePast, pastPerfect) {
                     super(lessonID, dutch, english);
-                    this.simplePast = simplePast;
-                    this.pastPerfect = pastPerfect;
+                    this.simplePast = simplePast ? (Array.isArray(simplePast) ? simplePast : [simplePast]) : null;
+                    this.pastPerfect = pastPerfect ? (Array.isArray(pastPerfect) ? pastPerfect : [pastPerfect]) : null;
                 }
 
                 getPart() {

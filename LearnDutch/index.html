@@ -8,56 +8,102 @@
     <link type="text/css" rel="stylesheet" href="./dutch.css" />
 
 </head>
-<body ng-app="DutchApp" ng-controller="DutchCtrl" >
+<body ng-app="DutchApp" ng-controller="DutchCtrl" ng-cloak>
 
-    <div>
-        <!-- put the focus back on the Test Me button after revealing the answer -->
-        <button type="button" 
-                ng-click="testMe()"
-                focus-me="viewService.justStarted,viewService.answer">
-            Test me
-        </button>
+    <div class="options">
 
-        <span>
+        <fieldset>
 
-            <select ng-model="viewService.mode" 
-                    ng-options="mode as mode.display for mode in viewService.modeOptions"></select>
+            <table cellpadding="3" cellspacing="0" border="0">
 
-            <label>Lesson: <input type="text" 
-                                  class="lesson"
-                                  ng-model="viewService.lessonID"/>
-            </label>
+                <tbody>
 
-        </span>
+                    <tr>
+                        <td><label for="mode">Words:</label></td>
+                        <td>
+                            <select id="mode"
+                                    ng-model="viewService.mode"
+                                    ng-options="mode as mode for mode in viewService.modeOptions"></select>
+                        </td>
+                    </tr>
 
+                    <tr ng-show="viewService.mode == constants.MODES.VERBS">
+                        <td><label for="tense">Tense:</label></td>
+                        <td>
+                            <select id="tense"
+                                    ng-model="viewService.tense"
+                                    ng-options="tense as tense for tense in viewService.tenseOptions"></select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><label for="lessonID">Lesson:</label></td>
+                        <td>
+                            <input id="lessonID"
+                                   type="text"
+                                   class="lesson"
+                                   ng-model="viewService.lessonID" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">
+                            <!-- put the focus back on the Test Me button after revealing the answer -->
+                            <button type="button"
+                                    ng-click="cardService.testMe()"
+                                    focus-me="viewService.justStarted,viewService.answer">
+                                Test me
+                            </button>
+
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </fieldset>
+
+    </div><!-- .options -->
+
+    <div class="no-words" ng-show="viewService.noWords">
+        There are no words available to test.
     </div>
 
-    <div class="cards" ng-cloak>
-        <div class="card question">
-            <span ng-show="viewService.word">
-                <span class="word">{{ viewService.word.english }}</span>
-                <span class="part">{{ viewService.word.getPart() }}</span>
-            </span>
+
+    <div class="user-panel" ng-hide="viewService.noWords">
+
+
+        <div class="cards" ng-hide="viewService.noWords">
+            <div class="card question">
+                <span ng-show="viewService.word">
+                    <span class="word">{{ viewService.word.english }}</span>
+                    <span class="part">{{ viewService.word.getPart() }}</span>
+                </span>
+            </div>
+            <div class="card answer">
+                <span ng-show="viewService.answer"
+                      ng-class="{ 'success': viewService.answer.isCorrect , 'failure': viewService.answer.isWrong } ">
+                    <span class="word">{{ viewService.answer.word }}</span>
+                    <span class="score">
+                        <span ng-show="viewService.answer.score > 0">+</span>{{ viewService.answer.score }}</>
+                    </span>
+            </div>
         </div>
-        <div class="card answer">
-            <span ng-show="viewService.answer" 
-                  ng-class="{ 'success': viewService.answer.isCorrect , 'failure': viewService.answer.isWrong } ">
-                <span class="word">{{ viewService.answer.word }}</span>
-                <span class="score"><span ng-show="viewService.answer.score > 0">+</span>{{ viewService.answer.score }}</>
-            </span>
+
+
+        <div class="user-input">
+
+            <!-- focus on the input when the test word changes -->
+            <input type="text"
+                   ng-model="viewService.guess"
+                   class="guess"
+                   focus-me="viewService.word"
+                   enter-action="cardService.checkAnswer()" />
+
         </div>
-    </div>
 
-    <div class="user-panel">
-
-        <!-- focus on the input when the test word changes -->
-        <input type="text" 
-               ng-model="viewService.guess"
-               class="guess"
-               focus-me="viewService.word"
-                enter-action="cardService.checkAnswer()"/>
-
-    </div>
+    </div><!-- .user-panel -->
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.js"></script>

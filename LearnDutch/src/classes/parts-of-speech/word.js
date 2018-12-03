@@ -9,7 +9,7 @@
             class Word {
                     constructor(lessonID, dutch, english) {
                         this.lessonID = lessonID;
-                        this.dutch = dutch;
+                        this.dutch = Array.isArray(dutch) ? dutch : [dutch]
                         this.english = english;
                         this.numWrong = 0;
                         this.numRight = 0;

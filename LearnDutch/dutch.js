@@ -20,11 +20,6 @@
             $scope.viewService = viewService;
             $scope.cardService = cardService;
 
-            $scope.testMe = function () {
-
-                cardService.testMe(viewService.mode.value);
-
-            };
 
 
         }  // outer function
@@ -103,14 +98,16 @@
             return service;
 
 
-            function testMe(mode) {
+            function testMe() {
 
                 // Clear any guesses and the previous answer, if any
                 viewService.guess = viewService.answer = null;
 
+                viewService.noWords = false;
+
                 viewService.justStarted = false;
 
-                let words = dictionaryService.getWords(mode);
+                let words = dictionaryService.getWords(viewService.mode, viewService.tense);
 
                 let options = [];
 
@@ -133,31 +130,45 @@
                 }
 
                 if (options.length == 0) {
-                    console.log('Out of words');
+                    viewService.noWords = true;
                     return;
                 }
 
                 let ix = Math.floor(Math.random() * options.length);
 
-                viewService.word = options[ix];
+                let word = options[ix];
 
-                switch (mode) {
+                switch (viewService.mode) {
 
-                    /*
-                    case MODE.SIMPLE_PAST:
-                        currentWord.correctAnswers = currentWord.simplePast.slice();
+                    case constants.MODES.VERBS:
+
+                        switch (viewService.tense)
+                        {
+                            case constants.TENSES.SIMPLE_PAST:
+                                word.correctAnswers = word.simplePast;
+                                break;
+
+                            case constants.TENSES.PAST_PERFECT:
+                                word.correctAnswers = word.pastPerfect;
+                                break;
+
+                            case constants.TENSES.PRESENT:
+                                word.correctAnswers = word.dutch;
+                                break;
+
+                        }  // tense switch
+
                         break;
 
-                    case MODE.PAST_PERFECT:
-                        currentWord.correctAnswers = [currentWord.pastPerfect];
-                        break;
-                    */
 
                     default:
-                        viewService.word.correctAnswers = Array.isArray(viewService.word.dutch) ? viewService.word.dutch : [viewService.word.dutch];
+                        word.correctAnswers = word.dutch;
                         break;
 
                 }
+
+                viewService.word = word;
+
 
             }  // testMe
 
@@ -212,23 +223,23 @@
 
         let constants =
             {
-                PARTS:
-                {
-                    VERB: 'verb',
-                    NOUN: 'noun',
-                    ADJ: 'adjective'
-                },
-
 
                 MODES:
                 {
-                    ALL: { display: 'All', value: 'all' },
-                    VERBS: { display: 'Verbs', value: 'verbs' },
-                    NOUNS: { display: 'Nouns', value: 'nouns' },
-                    ADJECTIVES: { display: 'Adjectives', value: 'adjectives' },
-                    ADVERBS: { display: 'Adverbs', value: 'adverbs' },
-                    PREPOSITIONS: { display: 'Prepositions', value: 'prepositions' },
-                    PHRASES: { display: 'Phrases', value: 'phrases' },
+                    ALL: 'All',
+                    VERBS: 'Verbs',
+                    NOUNS: 'Nouns',
+                    ADJECTIVES: 'Adjectives',
+                    ADVERBS: 'Adverbs',
+                    PREPOSITIONS: 'Prepositions',
+                    PHRASES: 'Phrases'
+                },
+
+                TENSES:
+                {
+                    PRESENT: 'Present',
+                    SIMPLE_PAST: 'Simple Past',
+                    PAST_PERFECT: 'Past Perfect'
                 }
 
             };
@@ -780,7 +791,7 @@
             words.push(new Noun(24, 'het weer', 'the weather'));
             words.push(new Phrase(24, ['wat voor weer wordt het?'], ['wat voor weer wordt het'], 'what will be the weather?'));
             words.push(new Noun(24, 'het weerbericht', 'the weather forecast'));
-            words.push(new Noun(24, 'het bericht', 'the message'));
+            words.push(new Noun(24, ['het bericht', 'de boodschap'], 'the message'));
             //            words.push(new Phrase(24, 'lekker weer, hè', 'nice weather isn’t it?'));
             words.push(new Phrase(24, 'zeker', '(for) sure'));
             words.push(new Phrase(24, ['mooi weer', 'lekker weer'], 'nice weather'));
@@ -833,37 +844,43 @@
             words.push(new Adjective(25, 'klaar', 'ready'));
 
 
-            function getWords(mode) {
+            function getWords(mode, tense) {
 
                 switch (mode) {
 
-                    case constants.MODES.ALL.value:
+                    case constants.MODES.ALL:
                         return words;
 
-                    case constants.MODES.VERBS.value:
+                    case constants.MODES.VERBS:
+
+                        switch (tense)
+                        {
+                            case constants.TENSES.SIMPLE_PAST:
+                                return words.filter(w => w instanceof Verb && w.simplePast && w.simplePast.length);
+
+                            case constants.TENSES.PAST_PERFECT:
+                                return words.filter(w => w instanceof Verb && w.pastPerfect);
+
+                        }
+
+                        // for present tense just return ALL verbs
                         return words.filter(w => w instanceof Verb);
 
-                    case constants.MODES.NOUNS.value:
+                    case constants.MODES.NOUNS:
                         return words.filter(w => w instanceof Noun);
 
-                    case constants.MODES.ADJECTIVES.value:
+                    case constants.MODES.ADJECTIVES:
                         return words.filter(w => w instanceof Adjective);
 
-                    case constants.MODES.ADVERBS.value:
+                    case constants.MODES.ADVERBS:
                         return words.filter(w => w instanceof Adverb);
 
-                    case constants.MODES.PREPOSITIONS.value:
+                    case constants.MODES.PREPOSITIONS:
                         return words.filter(w => w instanceof Preposition);
 
-                    case constants.MODES.PHRASES.value:
+                    case constants.MODES.PHRASES:
                         return words.filter(w => w instanceof Phrase);
-/*
-                    case constants.MODES.SIMPLE_PAST.value:
-                        return words.filter(w => w instanceof Verb && w.simplePast && w.simplePast.length > 0)
 
-                    case constants.MODES.PAST_PERFECT.value:
-                        return words.filter(w => w instanceof Verb && w.pastPerfect);
-*/
                 }
 
                 return [];
@@ -892,15 +909,12 @@
                 {
                     justStarted: true,
                     mode: constants.MODES.ALL,
-                    modeOptions: []
+                    modeOptions: Object.keys(constants.MODES).map(m => constants.MODES[m]),
+
+                    tense: constants.TENSES.PRESENT,
+                    tenseOptions: Object.keys(constants.TENSES).map(t => constants.TENSES[t])
 
                 };
-
-            for (let modeKey in constants.MODES)
-            {
-                view.modeOptions.push(constants.MODES[modeKey]);
-            }
-
 
             return view;
 
@@ -1101,8 +1115,8 @@
             class Verb extends Word {
                 constructor(lessonID, dutch, english, simplePast, pastPerfect) {
                     super(lessonID, dutch, english);
-                    this.simplePast = simplePast;
-                    this.pastPerfect = pastPerfect;
+                    this.simplePast = simplePast ? (Array.isArray(simplePast) ? simplePast : [simplePast]) : null;
+                    this.pastPerfect = pastPerfect ? (Array.isArray(pastPerfect) ? pastPerfect : [pastPerfect]) : null;
                 }
 
                 getPart() {
@@ -1132,7 +1146,7 @@
             class Word {
                     constructor(lessonID, dutch, english) {
                         this.lessonID = lessonID;
-                        this.dutch = dutch;
+                        this.dutch = Array.isArray(dutch) ? dutch : [dutch]
                         this.english = english;
                         this.numWrong = 0;
                         this.numRight = 0;

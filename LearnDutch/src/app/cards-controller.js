@@ -12,11 +12,6 @@
             $scope.viewService = viewService;
             $scope.cardService = cardService;
 
-            $scope.testMe = function () {
-
-                cardService.testMe(viewService.mode.value);
-
-            };
 
 
         }  // outer function

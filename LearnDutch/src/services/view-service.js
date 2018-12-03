@@ -10,15 +10,12 @@
                 {
                     justStarted: true,
                     mode: constants.MODES.ALL,
-                    modeOptions: []
+                    modeOptions: Object.keys(constants.MODES).map(m => constants.MODES[m]),
+
+                    tense: constants.TENSES.PRESENT,
+                    tenseOptions: Object.keys(constants.TENSES).map(t => constants.TENSES[t])
 
                 };
-
-            for (let modeKey in constants.MODES)
-            {
-                view.modeOptions.push(constants.MODES[modeKey]);
-            }
-
 
             return view;
 

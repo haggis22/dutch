@@ -1,41 +1,52 @@
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important; }
 
-.cards {
-  clear: both;
-  margin-top: 15px;
-  background: pink; }
-
-.card {
-  display: block;
-  font-size: 40px;
+.options fieldset {
+  display: inline-block;
   padding: 10px;
-  min-width: 200px;
-  height: 50px;
-  white-space: nowrap;
-  border: 2px solid black; }
-  .card.question {
-    background-color: aliceblue; }
-    .card.question .part {
-      font-size: 0.4em;
-      font-style: italic; }
-  .card.answer {
-    background-color: lightgrey; }
-    .card.answer .score {
-      font-size: 0.4em;
-      font-style: italic; }
+  background-color: orange; }
+
+.no-words {
+  margin-top: 15px;
+  border: 2px solid red;
+  background-color: #f99;
+  font-weight: bold;
+  padding: 15px;
+  display: inline-block;
+  font-size: 2em; }
 
 .user-panel {
   margin-top: 15px; }
-  .user-panel .guess {
-    font-size: 40px;
-    width: 400px;
-    height: 50px;
-    white-space: nowrap;
-    padding: 10px; }
-
-.success {
-  color: green; }
-
-.failure {
-  color: red; }
+  .user-panel .cards {
+    clear: both;
+    background: pink; }
+    .user-panel .cards .card {
+      display: block;
+      font-size: 40px;
+      padding: 10px;
+      min-width: 200px;
+      height: 50px;
+      white-space: nowrap;
+      border: 2px solid black; }
+      .user-panel .cards .card.question {
+        background-color: aliceblue; }
+        .user-panel .cards .card.question .part {
+          font-size: 0.4em;
+          font-style: italic; }
+      .user-panel .cards .card.answer {
+        background-color: lightgrey; }
+        .user-panel .cards .card.answer .score {
+          font-size: 0.4em;
+          font-style: italic; }
+  .user-panel .user-input {
+    margin-top: 15px; }
+    .user-panel .user-input .guess {
+      font-size: 40px;
+      width: 400px;
+      height: 50px;
+      white-space: nowrap;
+      padding: 10px; }
+  .user-panel .success {
+    color: green; }
+  .user-panel .failure {
+    color: red; }

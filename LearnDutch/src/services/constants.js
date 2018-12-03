@@ -6,23 +6,23 @@
 
         let constants =
             {
-                PARTS:
-                {
-                    VERB: 'verb',
-                    NOUN: 'noun',
-                    ADJ: 'adjective'
-                },
-
 
                 MODES:
                 {
-                    ALL: { display: 'All', value: 'all' },
-                    VERBS: { display: 'Verbs', value: 'verbs' },
-                    NOUNS: { display: 'Nouns', value: 'nouns' },
-                    ADJECTIVES: { display: 'Adjectives', value: 'adjectives' },
-                    ADVERBS: { display: 'Adverbs', value: 'adverbs' },
-                    PREPOSITIONS: { display: 'Prepositions', value: 'prepositions' },
-                    PHRASES: { display: 'Phrases', value: 'phrases' },
+                    ALL: 'All',
+                    VERBS: 'Verbs',
+                    NOUNS: 'Nouns',
+                    ADJECTIVES: 'Adjectives',
+                    ADVERBS: 'Adverbs',
+                    PREPOSITIONS: 'Prepositions',
+                    PHRASES: 'Phrases'
+                },
+
+                TENSES:
+                {
+                    PRESENT: 'Present',
+                    SIMPLE_PAST: 'Simple Past',
+                    PAST_PERFECT: 'Past Perfect'
                 }
 
             };

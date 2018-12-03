@@ -15,14 +15,16 @@
             return service;
 
 
-            function testMe(mode) {
+            function testMe() {
 
                 // Clear any guesses and the previous answer, if any
                 viewService.guess = viewService.answer = null;
 
+                viewService.noWords = false;
+
                 viewService.justStarted = false;
 
-                let words = dictionaryService.getWords(mode);
+                let words = dictionaryService.getWords(viewService.mode, viewService.tense);
 
                 let options = [];
 
@@ -45,31 +47,45 @@
                 }
 
                 if (options.length == 0) {
-                    console.log('Out of words');
+                    viewService.noWords = true;
                     return;
                 }
 
                 let ix = Math.floor(Math.random() * options.length);
 
-                viewService.word = options[ix];
+                let word = options[ix];
 
-                switch (mode) {
+                switch (viewService.mode) {
 
-                    /*
-                    case MODE.SIMPLE_PAST:
-                        currentWord.correctAnswers = currentWord.simplePast.slice();
+                    case constants.MODES.VERBS:
+
+                        switch (viewService.tense)
+                        {
+                            case constants.TENSES.SIMPLE_PAST:
+                                word.correctAnswers = word.simplePast;
+                                break;
+
+                            case constants.TENSES.PAST_PERFECT:
+                                word.correctAnswers = word.pastPerfect;
+                                break;
+
+                            case constants.TENSES.PRESENT:
+                                word.correctAnswers = word.dutch;
+                                break;
+
+                        }  // tense switch
+
                         break;
 
-                    case MODE.PAST_PERFECT:
-                        currentWord.correctAnswers = [currentWord.pastPerfect];
-                        break;
-                    */
 
                     default:
-                        viewService.word.correctAnswers = Array.isArray(viewService.word.dutch) ? viewService.word.dutch : [viewService.word.dutch];
+                        word.correctAnswers = word.dutch;
                         break;
 
                 }
+
+                viewService.word = word;
+
 
             }  // testMe
 

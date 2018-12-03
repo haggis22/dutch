@@ -591,37 +591,43 @@
             words.push(new Adjective(25, 'klaar', 'ready'));
 
 
-            function getWords(mode) {
+            function getWords(mode, tense) {
 
                 switch (mode) {
 
-                    case constants.MODES.ALL.value:
+                    case constants.MODES.ALL:
                         return words;
 
-                    case constants.MODES.VERBS.value:
+                    case constants.MODES.VERBS:
+
+                        switch (tense)
+                        {
+                            case constants.TENSES.SIMPLE_PAST:
+                                return words.filter(w => w instanceof Verb && w.simplePast && w.simplePast.length);
+
+                            case constants.TENSES.PAST_PERFECT:
+                                return words.filter(w => w instanceof Verb && w.pastPerfect);
+
+                        }
+
+                        // for present tense just return ALL verbs
                         return words.filter(w => w instanceof Verb);
 
-                    case constants.MODES.NOUNS.value:
+                    case constants.MODES.NOUNS:
                         return words.filter(w => w instanceof Noun);
 
-                    case constants.MODES.ADJECTIVES.value:
+                    case constants.MODES.ADJECTIVES:
                         return words.filter(w => w instanceof Adjective);
 
-                    case constants.MODES.ADVERBS.value:
+                    case constants.MODES.ADVERBS:
                         return words.filter(w => w instanceof Adverb);
 
-                    case constants.MODES.PREPOSITIONS.value:
+                    case constants.MODES.PREPOSITIONS:
                         return words.filter(w => w instanceof Preposition);
 
-                    case constants.MODES.PHRASES.value:
+                    case constants.MODES.PHRASES:
                         return words.filter(w => w instanceof Phrase);
-/*
-                    case constants.MODES.SIMPLE_PAST.value:
-                        return words.filter(w => w instanceof Verb && w.simplePast && w.simplePast.length > 0)
 
-                    case constants.MODES.PAST_PERFECT.value:
-                        return words.filter(w => w instanceof Verb && w.pastPerfect);
-*/
                 }
 
                 return [];
