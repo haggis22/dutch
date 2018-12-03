@@ -18,7 +18,10 @@
   "homepage": "https://github.com/haggis22/dutch#readme",
   "devDependencies": {
     "del": "^3.0.0",
+    "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
-    "gulp-sass": "^4.0.2"
+    "gulp-sass": "^4.0.2",
+    "merge-stream": "^1.0.1",
+    "sort-stream": "^1.0.1"
   }
 }

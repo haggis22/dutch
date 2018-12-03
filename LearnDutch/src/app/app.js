@@ -1,16 +1,7 @@
 (function () {
 
+    "use strict";
+
     let app = angular.module('DutchApp', []);
-
-    app.controller('DutchCtrl', ['$scope',
-
-        function ($scope) {
-
-            $scope.name = 'Danny';
-
-        }
-
-    ]);
-
 
 })();

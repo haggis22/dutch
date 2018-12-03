@@ -1,249 +1,251 @@
-ï»¿<!DOCTYPE html>
+(function () {
 
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <title></title>
+    "use strict";
 
-    <style>
+    let app = angular.module('DutchApp', []);
 
-        .cards
-        {
-            clear: both;
-            margin-top: 15px;
-            background: pink;
-        }
+})();
 
-        .card
-        {
-            display: block;
-            font-size: 40px;
-            padding: 10px;
-            min-width: 200px;
-            height: 50px;
-            white-space: nowrap;
-            border: 2px solid black;
-        }
+(function (app) {
 
-        .card.question
-        {
-            background-color: aliceblue;
-        }
+    "use strict";
 
-        .card.question .part
-        {
-            font-size: 0.4em;
-            font-style: italic;
-        }
+    app.controller("DutchCtrl", ['$scope',
+                                    'dutch.constants', 'dutch.cardService', 'dutch.viewService',
 
-        .card.answer
-        {
-            background-color: lightgrey;
-        }
+        function ($scope,
+                    constants, cardService, viewService) {
 
-        .card.answer .score
-        {
-            font-size: 0.4em;
-            font-style: italic;
-        }
+            $scope.constants = constants;
+            $scope.viewService = viewService;
+            $scope.cardService = cardService;
 
-        .user-panel
-        {
-            margin-top: 15px;
-        }
+            $scope.testMe = function () {
 
-        input#guess
-        {
-            font-size: 40px;
-            width: 400px;
-            height: 50px;
-            white-space: nowrap;
-            padding: 10px;
-        }
+                cardService.testMe(viewService.mode.value);
 
-        .success
-        {
-            color: green;
-        }
-
-        .failure
-        {
-            color: red;
-        }
-
-    </style>
-
-</head>
-<body>
-
-    <div>
-        <button type="button" id="test-me">
-            Test me
-        </button>
-
-        <span>
-
-            <select id="selMode">
-                <option value="random" checked>Random</option>
-                <option value="verbs">Verbs</option>
-                <option value="nouns">Nouns</option>
-                <option value="adjectives">Adjectives</option>
-                <option value="phrases">Phrases</option>
-            </select>
-
-            <label>Lesson: <input type="text" id="txtLessonID" /></label>
-                <!--
-
-                    <label><input type="radio" name="rdoMode" value="simple past" /> Simple Past</label>
-                    <label><input type="radio" name="rdoMode" value="past perfect" /> Past Perfect</label>
-        -->
-
-</span>
-
-    </div>
-
-    <div class="cards">
-        <div class="card question">
-            <span class="word"></span>
-            <span class="part"></span>
-        </div>
-        <div class="card answer">
-            <span class="word"></span>
-            <span class="score"></span>
-        </div>
-    </div>
-
-    <div class="user-panel">
-
-        <input type="text" id="guess" />
-
-    </div>
-
-    <div ng-app="DutchApp" ng-controller="DutchCtrl">
-
-        Hoi, ik heet {{ name }}.
-
-    </div>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.js"></script>
-    <script src="./dutch.js"></script>
-
-    <script>
-
-        (function () {
-
-            
+            };
 
 
+        }  // outer function
 
+    ])
 
+})(angular.module('DutchApp'));
+(function (app) {
 
-            class Word
-            {
-                constructor(lessonID, dutch, english)
-                {
-                    this.lessonID = lessonID;
-                    this.dutch = dutch;
-                    this.english = english;
-                    this.numWrong = 0;
-                    this.numRight = 0;
+    "use strict";
+
+    app.directive('enterAction', [function () {
+        return function (scope, element, attrs) {
+
+            element.bind("keydown keypress", function (event) {
+
+                if (event.which === 13) {
+                    scope.$apply(function () {
+                        scope.$eval(attrs.enterAction);
+                    });
+
+                    event.preventDefault();
                 }
+            });
+        };
 
+    }]);
+
+})(angular.module('DutchApp'));
+
+
+(function (app) {
+
+    "use strict";
+
+    app.directive('focusMe', ['$timeout', function ($timeout) {
+        return {
+            link: function (scope, element, attrs) {
+                scope.$watch(attrs.focusMe, function (value) {
+                    if (value) {
+                        // the timeout will give any container time to appear
+                        $timeout(function () {
+                            element[0].focus();
+                        }, 10);
+                    }
+                });
             }
+        };
 
-            class Verb extends Word
+    }]);
+
+})(angular.module('DutchApp'));
+
+
+(function (app) {
+
+    "use strict";
+
+    app.factory('dutch.cardService', [ 'dutch.constants', 'dutch.viewService', 'dutch.dictionaryService',
+
+        function (constants, viewService, dictionaryService) {
+
+            let service =
             {
-                constructor(lessonID, dutch, english, simplePast, pastPerfect)
+                testMe: testMe,
+                checkAnswer: checkAnswer
+            };
+
+            return service;
+
+
+            function testMe(mode) {
+
+                // Clear any guesses and the previous answer, if any
+                viewService.guess = viewService.answer = null;
+
+                let words = dictionaryService.getWords(mode);
+
+                let options = [];
+
+/*
+                let lessonID = parseInt($('#txtLessonID').val(), 10);
+                if (!isNaN(lessonID)) {
+                    options = options.filter(w => w.lessonID == lessonID);
+                }
+*/
+
+                for (let word of words)
                 {
-                    super(lessonID, dutch, english);
-                    this.simplePast = simplePast;
-                    this.pastPerfect = pastPerfect;
+                    // give me extra work on ones I have missed already
+                    // If numWrong == numRight, then it will get added once
+                    // If numWrong = 1 and numRight = 0, then it will get added 3 times
+                    for (let count = 0; count <= 2 * (word.numWrong - word.numRight); count++)
+                    {
+                        options.push(word);
+                    }
+
                 }
 
-                getPart()
-                {
-                    return "v";
+                if (options.length == 0) {
+                    console.log('Out of words');
+                    return;
                 }
-            }
 
-            class Noun extends Word
+                let ix = Math.floor(Math.random() * options.length);
+
+                viewService.word = options[ix];
+
+                switch (mode) {
+
+                    /*
+                    case MODE.SIMPLE_PAST:
+                        currentWord.correctAnswers = currentWord.simplePast.slice();
+                        break;
+
+                    case MODE.PAST_PERFECT:
+                        currentWord.correctAnswers = [currentWord.pastPerfect];
+                        break;
+                    */
+
+                    default:
+                        viewService.word.correctAnswers = Array.isArray(viewService.word.dutch) ? viewService.word.dutch : [viewService.word.dutch];
+                        break;
+
+                }
+
+            }  // testMe
+
+
+            function checkAnswer() {
+
+                if (!viewService.guess || !viewService.guess.trim()) 
+                {
+                    // nothing to check
+                    return;
+                }
+
+                let myAnswer = viewService.guess.trim();
+
+                let answer =
+                    {
+                        word: viewService.word.correctAnswers.join(","),
+                        score: 0
+                    };
+
+                if (viewService.word.correctAnswers.find(a => a == myAnswer)) {
+
+                    answer.isCorrect = true;
+                    viewService.word.numRight++;
+
+                }
+                else {
+
+                    answer.isWrong = true;
+                    viewService.word.numWrong++;
+
+                }
+
+                answer.score = viewService.word.numRight - viewService.word.numWrong;
+
+                viewService.answer = answer;
+
+            }  // checkAnswer
+
+
+        }
+
+    ]);
+
+
+})(angular.module('DutchApp'));
+(function (app) {
+
+    "use strict";
+
+    app.constant('dutch.constants', (function () {
+
+        let constants =
             {
-                constructor(lessonID, dutch, english)
+                PARTS:
                 {
-                    super(lessonID, dutch, english);
+                    VERB: 'verb',
+                    NOUN: 'noun',
+                    ADJ: 'adjective'
+                },
+
+
+                MODES:
+                {
+                    ALL: { display: 'All', value: 'all' },
+                    VERBS: { display: 'Verbs', value: 'verbs' },
+                    NOUNS: { display: 'Nouns', value: 'nouns' },
+                    ADJECTIVES: { display: 'Adjectives', value: 'adjectives' },
+                    ADVERBS: { display: 'Adverbs', value: 'adverbs' },
+                    PREPOSITIONS: { display: 'Prepositions', value: 'prepositions' },
+                    PHRASES: { display: 'Phrases', value: 'phrases' },
                 }
 
-                getPart() {
-                    return "n";
-                }
+            };
 
-            }
+        return constants;
 
-            class Adjective extends Word
+
+    })());
+
+
+})(angular.module('DutchApp'));
+(function (app) {
+
+    "use strict";
+
+    app.factory('dutch.dictionaryService', ['dutch.Adjective', 'dutch.Adverb', 'dutch.Noun', 'dutch.Nummer', 'dutch.Phrase', 'dutch.Preposition', 'dutch.Verb', 
+                                                'dutch.constants', 'dutch.viewService',
+
+            function (Adjective, Adverb, Noun, Nummer, Phrase, Preposition, Verb,
+                        constants, viewService) {
+
+            let service =
             {
-                constructor(lessonID, dutch, english)
-                {
-                    super(lessonID, dutch, english);
-                }
-
-                getPart() {
-                    return "adj";
-                }
-
-            }
-
-            class Preposition extends Word
-            {
-                constructor(lessonID, dutch, english)
-                {
-                    super(lessonID, dutch, english);
-                }
-
-                getPart() {
-                    return "prep";
-                }
-
-            }
-
-            class Phrase extends Word
-            {
-                constructor(lessonID, dutch, english)
-                {
-                    super(lessonID, dutch, english);
-                }
-
-                getPart() {
-                    return "phrase";
-                }
-
-            }
-
-            class Nummer extends Word
-            {
-                constructor(lessonID, dutch, english)
-                {
-                    super(lessonID, dutch, english);
-                }
-
-                getPart() {
-                    return "number";
-                }
-
-            }
-
-            class Adverb extends Word
-            {
-                constructor(lessonID, dutch, english)
-                {
-                    super(lessonID, dutch, english);
-                }
-
-                getPart() {
-                    return "adv";
-                }
-
-            }
+                getWords: getWords
+            };
 
             let words = [];
 
@@ -321,9 +323,9 @@
             words.push(new Noun(4, 'het vlees', 'the meat'));
             words.push(new Noun(4, 'de kip', 'the chicken'));
             words.push(new Noun(4, 'de friet', 'the French fries'));
-//            words.push(new Noun(4, 'frietje met', 'French fries with mayonnaise'));
+            //            words.push(new Noun(4, 'frietje met', 'French fries with mayonnaise'));
             words.push(new Noun(4, 'de frikadel', 'Dutch meat sausage'));
-//            words.push(new Noun(4, 'de kroket', 'Dutch fried ragout bar'));
+            //            words.push(new Noun(4, 'de kroket', 'Dutch fried ragout bar'));
             words.push(new Noun(4, 'de pannenkoek', 'the pancake'));
             words.push(new Noun(4, 'de stroopwafel', 'the syrup waffle'));
             words.push(new Noun(4, 'drop', 'liquorice'));
@@ -334,7 +336,7 @@
             words.push(new Phrase(5, 'hoeveel', 'how much'));
             words.push(new Noun(5, 'de bloem', 'the flower'));
             words.push(new Adverb(5, 'waarom', 'why'));
-            words.push(new Adverb(5, 'daarom', 'thatâ€™s why'));
+            words.push(new Adverb(5, 'daarom', 'that’s why'));
             words.push(new Phrase(5, ['want', 'omdat'], 'because'));
             words.push(new Phrase(5, 'maar', 'but'));
             words.push(new Preposition(5, 'behalve', 'except'));
@@ -365,7 +367,7 @@
             words.push(new Noun(6, 'de school', 'the school'));
             words.push(new Noun(6, 'de universiteit', 'the university'));
             words.push(new Nummer(7, 'nul', 'zero'));
-            words.push(new Nummer(7, 'Ã©Ã©n', 'one'));
+            words.push(new Nummer(7, 'één', 'one'));
             words.push(new Nummer(7, 'twee', 'two'));
             words.push(new Nummer(7, 'drie', 'three'));
             words.push(new Nummer(7, 'vier', 'four'));
@@ -381,7 +383,7 @@
             words.push(new Nummer(7, 'veertien', 'fourteen'));
             words.push(new Nummer(7, 'vijftien', 'fifteen'));
             words.push(new Nummer(7, 'twintig', 'twenty'));
-            words.push(new Nummer(7, 'Ã©Ã©nentwintig', 'twenty one'));
+            words.push(new Nummer(7, 'éénentwintig', 'twenty one'));
             words.push(new Nummer(7, 'dertig', 'thirty'));
             words.push(new Nummer(7, 'veertig', 'forty'));
             words.push(new Nummer(7, 'vijftig', 'fifty'));
@@ -498,19 +500,19 @@
             words.push(new Noun(13, 'kunst', 'art'));
             words.push(new Noun(13, 'de verjaardag', 'the birthday'));
             words.push(new Verb(13, 'een verjaardag vieren', 'to celebrate a birthday'));
-            words.push(new Phrase(13, 'hij is jarig', 'itâ€™s his birthday'));
+            words.push(new Phrase(13, 'hij is jarig', 'it’s his birthday'));
             words.push(new Verb(13, 'zingen', 'to sing'));
             words.push(new Verb(13, 'dansen', 'to dance'));
             words.push(new Verb(13, 'winkelen', 'to go shopping'));
             words.push(new Noun(14, 'Amsterdam', 'Amsterdam'));
             words.push(new Noun(14, 'de gracht', 'the canal'));
-//            words.push(new Noun(14, 'het grachtenpand', 'the canal house'));
+            //            words.push(new Noun(14, 'het grachtenpand', 'the canal house'));
             words.push(new Noun(14, 'de woonboot', 'the house boat'));
             words.push(new Verb(14, 'wonen', 'to live (in a place)'));
             words.push(new Verb(14, 'leven', 'to live (be alive)'));
             words.push(new Noun(14, 'het paleis', 'the palace'));
             words.push(new Noun(14, 'pont', 'the ferry'));
-//            words.push(new Noun(14, 'de rondvaart', 'the canal cruise'));
+            //            words.push(new Noun(14, 'de rondvaart', 'the canal cruise'));
             words.push(new Noun(14, 'het museum', 'the museum'));
             words.push(new Noun(14, 'het concert', 'the concert'));
             words.push(new Noun(14, 'het gebouw', 'the building'));
@@ -519,10 +521,10 @@
             words.push(new Noun(14, 'de brug', 'the bridge'));
             words.push(new Noun(14, 'het eiland', 'the island'));
             words.push(new Noun(14, 'de ring', 'the ring, the ring road'));
-//            words.push(new Noun(14, 'de coffeeshop', 'bar where soft drugs is sold'));
+            //            words.push(new Noun(14, 'de coffeeshop', 'bar where soft drugs is sold'));
             words.push(new Noun(14, 'het stadion', 'the stadium'));
             words.push(new Noun(14, 'het hoofdkantoor', 'the head office'));
-//            words.push(new Noun(14, 'de wallen', 'the red light district'));
+            //            words.push(new Noun(14, 'de wallen', 'the red light district'));
             words.push(new Noun(14, 'de hoer', 'the prostitute'));
             words.push(new Noun(14, 'het park', 'the park'));
             words.push(new Noun(14, 'het bos', 'the forest'));
@@ -639,22 +641,22 @@
             words.push(new Verb(19, 'veranderen', 'to change'));
             words.push(new Noun(19, 'de brief', 'the letter'));
             //words.push(new Noun(19, 'de sollicitatiebrief', 'the application letter'));
-//            words.push(new Noun(19, 'het cv (curriculum vitae)', 'the resume'));
+            //            words.push(new Noun(19, 'het cv (curriculum vitae)', 'the resume'));
             words.push(new Noun(19, 'de opleiding', 'the education'));
             words.push(new Noun(19, 'de ervaring', 'the experience'));
-//            words.push(new Noun(19, 'het gesprek', 'the conversation, the interview'));
-//            words.push(new Noun(19, 'het sollicitatiegesprek', 'the job interview'));
+            //            words.push(new Noun(19, 'het gesprek', 'the conversation, the interview'));
+            //            words.push(new Noun(19, 'het sollicitatiegesprek', 'the job interview'));
             words.push(new Noun(19, ['het bedrijf', 'de zaak'], 'the company'));
             words.push(new Noun(19, 'het salaris', 'the salary'));
             words.push(new Adjective(19, 'bruto', 'gross (money)'));
             words.push(new Adjective(19, 'netto', 'net (money)'));
             words.push(new Noun(19, 'de belasting', 'the tax'));
-//            words.push(new Noun(19, 'het vakantiegeld', 'the vacation bonus'));
-//            words.push(new Noun(19, 'de auto van de zaak', 'the company car'));
+            //            words.push(new Noun(19, 'het vakantiegeld', 'the vacation bonus'));
+            //            words.push(new Noun(19, 'de auto van de zaak', 'the company car'));
             words.push(new Noun(19, 'het pensioen', 'the pension'));
-//            words.push(new Noun(19, 'de reiskosten', 'the travel expenses'));
+            //            words.push(new Noun(19, 'de reiskosten', 'the travel expenses'));
             words.push(new Noun(19, 'de vergoeding', 'the compensation'));
-//            words.push(new Noun(19, 'de reiskostenvergoeding', 'the compensation for travel expenses'));
+            //            words.push(new Noun(19, 'de reiskostenvergoeding', 'the compensation for travel expenses'));
             words.push(new Noun(19, 'de collega', 'the colleague'));
             words.push(new Verb(19, 'aannemen', 'to hire'));
             words.push(new Verb(19, 'ontslaan', 'to fire'));
@@ -721,7 +723,7 @@
             words.push(new Noun(22, 'de spits', 'the striker'));
             words.push(new Noun(22, 'de middenvelder', 'the midfielder'));
             words.push(new Noun(22, 'de verdediger', 'the defender'));
-            words.push(new Noun(22, [ 'de keeper', 'de doelverdediger' ], 'the goalkeeper'));
+            words.push(new Noun(22, ['de keeper', 'de doelverdediger'], 'the goalkeeper'));
             words.push(new Noun(22, 'de scheidsrechter', 'the referee'));
             words.push(new Noun(22, 'de supporter', 'the fan'));
             words.push(new Noun(22, 'de twaalfde man', 'the fans'));
@@ -771,7 +773,7 @@
             words.push(new Phrase(24, ['wat voor weer wordt het?'], ['wat voor weer wordt het'], 'what will be the weather?'));
             words.push(new Noun(24, 'het weerbericht', 'the weather forecast'));
             words.push(new Noun(24, 'het bericht', 'the message'));
-//            words.push(new Phrase(24, 'lekker weer, hÃ¨', 'nice weather isnâ€™t it?'));
+            //            words.push(new Phrase(24, 'lekker weer, hè', 'nice weather isn’t it?'));
             words.push(new Phrase(24, 'zeker', '(for) sure'));
             words.push(new Phrase(24, ['mooi weer', 'lekker weer'], 'nice weather'));
             words.push(new Noun(24, 'vandaag', 'today'));
@@ -823,197 +825,319 @@
             words.push(new Adjective(25, 'klaar', 'ready'));
 
 
-            let currentWord = null;
-
-
-            $('#test-me').on('click', testMe);
-
-
-            function chooseWord()
-            {
-                let mode = $('#selMode option:checked').val();
-
-                let options = [];
-
-                switch (mode)
-                {
-                    case MODE.RANDOM:
-                        options = words;
-                        break;
-
-                    case MODE.VERBS:
-                        options = words.filter(w => w instanceof Verb);
-                        break;
-
-                    case MODE.NOUNS:
-                        options = words.filter(w => w instanceof Noun);
-                        break;
-
-                    case MODE.ADJECTIVES:
-                        options = words.filter(w => w instanceof Adjective);
-                        break;
-
-                    case MODE.ADVERBS:
-                        options = words.filter(w => w instanceof Adverb);
-                        break;
-
-                    case MODE.PREPOSITIONS:
-                        options = words.filter(w => w instanceof Preposition);
-                        break;
-
-                    case MODE.PHRASES:
-                        options = words.filter(w => w instanceof Phrase);
-                        break;
-
-                    case MODE.SIMPLE_PAST:
-                        options = words.filter(w => w instanceof Verb && w.simplePast && w.simplePast.length > 0)
-                        break;
-
-                    case MODE.PAST_PERFECT:
-                        options = words.filter(w => w instanceof Verb && w.pastPerfect);
-                        break;
-
-                }
-
-                let lessonID = parseInt($('#txtLessonID').val(), 10);
-                if (!isNaN(lessonID))
-                {
-                    options = options.filter(w => w.lessonID == lessonID);
-                }
-
-                options = options.filter(w => w.numRight <= w.numWrong);
-
-                // copy the original array
-                let missedOptions = options.slice();
-
-                // give me extra work on ones I have missed already
-                for (let word of options)
-                {
-                    // we're going to add it 2 times for every time we got it wrong
-                    for (let count=0; count < 2 * (word.numWrong - word.numRight); count++)
-                    {
-                        missedOptions.push(word);
-                    }
-                }
-
-                options = missedOptions;
-
-                if (options.length == 0)
-                {
-                    console.log('Out of words');
-                    return null;
-                }
-
-                let ix = Math.floor(Math.random() * options.length);
-
-                return options[ix];
-            }
-
-
-            function testMe() {
-
-
-                currentWord = chooseWord();
-
-                let mode = $('#selMode option:checked').val();
+            function getWords(mode) {
 
                 switch (mode) {
 
-                    case MODE.SIMPLE_PAST:
-                        currentWord.correctAnswers = currentWord.simplePast.slice();
-                        break;
+                    case constants.MODES.ALL.value:
+                        return words;
 
-                    case MODE.PAST_PERFECT:
-                        currentWord.correctAnswers = [currentWord.pastPerfect];
-                        break;
+                    case constants.MODES.VERBS.value:
+                        return words.filter(w => w instanceof Verb);
 
-                    default:
-                        currentWord.correctAnswers = Array.isArray(currentWord.dutch) ? currentWord.dutch : [currentWord.dutch];
-                        break;
+                    case constants.MODES.NOUNS.value:
+                        return words.filter(w => w instanceof Noun);
 
+                    case constants.MODES.ADJECTIVES.value:
+                        return words.filter(w => w instanceof Adjective);
+
+                    case constants.MODES.ADVERBS.value:
+                        return words.filter(w => w instanceof Adverb);
+
+                    case constants.MODES.PREPOSITIONS.value:
+                        return words.filter(w => w instanceof Preposition);
+
+                    case constants.MODES.PHRASES.value:
+                        return words.filter(w => w instanceof Phrase);
+/*
+                    case constants.MODES.SIMPLE_PAST.value:
+                        return words.filter(w => w instanceof Verb && w.simplePast && w.simplePast.length > 0)
+
+                    case constants.MODES.PAST_PERFECT.value:
+                        return words.filter(w => w instanceof Verb && w.pastPerfect);
+*/
                 }
 
+                return [];
 
-                $('.card.question .word').text(currentWord.english);
-                $('.card.question .part').text('(' + currentWord.getPart() + ')');
-
-                // clear the answer
-                let answerCard = $('.card.answer span');
-                answerCard.text('');
-                answerCard.removeClass('success');
-                answerCard.removeClass('failure');
+            }  // getWords
 
 
-                // clear the guess
-                let guessBox = $('#guess');
-                guessBox.val('');
-                guessBox.focus();
+            return service;
 
-                // stop any possible enter key from revealing the answer prematurely
-                event.preventDefault();
+
+        }
+
+    ]);
+
+
+})(angular.module('DutchApp'));
+(function (app) {
+
+    "use strict";
+
+    app.factory('dutch.viewService', [ 'dutch.constants',
+
+        function (constants) {
+
+            let view =
+                {
+                    mode: constants.MODES.ALL,
+                    modeOptions: []
+
+                };
+
+            for (let modeKey in constants.MODES)
+            {
+                view.modeOptions.push(constants.MODES[modeKey]);
+            }
+
+
+            return view;
+
+
+        }
+
+    ]);
+
+})(angular.module('DutchApp'));
+(function (app) {
+
+    "use strict";
+
+    app.factory('dutch.Adjective', ['dutch.Word',
+
+        function (Word) {
+
+            class Adjective extends Word {
+                constructor(lessonID, dutch, english) {
+                    super(lessonID, dutch, english);
+                }
+
+                getPart() {
+                    return "adj";
+                }
 
             }
 
-            $('#guess').on('keyup', function (event) {
+            return Adjective;
 
-                if (!$('#guess').val().length)
-                {
-                    return;
+
+        }  // outer function
+
+    ]);
+
+})(angular.module('DutchApp'));
+
+
+
+(function (app) {
+
+    "use strict";
+
+    app.factory('dutch.Adverb', ['dutch.Word',
+
+        function (Word) {
+
+            class Adverb extends Word {
+                constructor(lessonID, dutch, english) {
+                    super(lessonID, dutch, english);
                 }
 
-                var key = event.which || event.keyCode || 0;
-
-                if (key == 13)
-                {
-                    checkAnswer(document.getElementById('guess').value.trim());
+                getPart() {
+                    return "adv";
                 }
-
-            });
-
-
-            function checkAnswer(myAnswer) {
-
-                if (currentWord == null) {
-                    // nothing to check
-                    return;
-                }
-
-                let answerCard = $('.card.answer');
-
-                answerCard.find('.word').text(currentWord.correctAnswers.join(', '));
-
-                if (currentWord.correctAnswers.find(a => a == myAnswer))
-                {
-
-                    answerCard.find('span').addClass('success');
-                    answerCard.find('span').removeClass('failure');
-
-                    currentWord.numRight++;
-
-                }
-                else {
-
-                    answerCard.find('span').addClass('failure');
-                    answerCard.find('span').removeClass('success');
-
-                    currentWord.numWrong++;
-
-                }
-
-                let score = currentWord.numRight - currentWord.numWrong;
-                let scoreString = score > 0 ? '+' + score : score.toString();
-
-                answerCard.find('.score').text(scoreString);
-
-
-                $('#test-me').focus();
 
             }
 
-        })();
+            return Adverb;
 
 
-    </script>
+        }  // outer function
 
-</body>
-</html>
+    ]);
+
+})(angular.module('DutchApp'));
+
+
+
+(function (app) {
+
+    "use strict";
+
+    app.factory('dutch.Noun', ['dutch.Word',
+
+        function (Word) {
+
+            class Noun extends Word {
+                constructor(lessonID, dutch, english) {
+                    super(lessonID, dutch, english);
+                }
+
+                getPart() {
+                    return "n";
+                }
+
+            }
+
+            return Noun;
+
+
+        }  // outer function
+
+    ]);
+
+})(angular.module('DutchApp'));
+
+
+
+(function (app) {
+
+    "use strict";
+
+    app.factory('dutch.Nummer', ['dutch.Word',
+
+        function (Word) {
+
+            class Nummer extends Word {
+                constructor(lessonID, dutch, english) {
+                    super(lessonID, dutch, english);
+                }
+
+                getPart() {
+                    return "number";
+                }
+
+            }
+
+            return Nummer;
+
+
+        }  // outer function
+
+    ]);
+
+})(angular.module('DutchApp'));
+
+
+
+(function (app) {
+
+    "use strict";
+
+    app.factory('dutch.Phrase', ['dutch.Word',
+
+        function (Word) {
+
+            class Phrase extends Word {
+                constructor(lessonID, dutch, english) {
+                    super(lessonID, dutch, english);
+                }
+
+                getPart() {
+                    return "phrase";
+                }
+
+            }
+
+            return Phrase;
+
+
+        }  // outer function
+
+    ]);
+
+})(angular.module('DutchApp'));
+
+
+
+(function (app) {
+
+    "use strict";
+
+    app.factory('dutch.Preposition', ['dutch.Word',
+
+        function (Word) {
+
+            class Preposition extends Word {
+                constructor(lessonID, dutch, english) {
+                    super(lessonID, dutch, english);
+                }
+
+                getPart() {
+                    return "prep";
+                }
+
+            }
+
+            return Preposition;
+
+
+        }  // outer function
+
+    ]);
+
+})(angular.module('DutchApp'));
+
+
+
+(function (app) {
+
+    "use strict";
+
+    app.factory('dutch.Verb', ['dutch.Word',
+
+        function (Word) {
+
+            class Verb extends Word {
+                constructor(lessonID, dutch, english, simplePast, pastPerfect) {
+                    super(lessonID, dutch, english);
+                    this.simplePast = simplePast;
+                    this.pastPerfect = pastPerfect;
+                }
+
+                getPart() {
+                    return "v";
+                }
+            }
+
+            return Verb;
+
+
+        }  // outer function
+
+    ]);
+
+})(angular.module('DutchApp'));
+
+
+
+(function (app) {
+
+    "use strict";
+
+    app.factory('dutch.Word', [ 
+
+        function() {
+
+            class Word {
+                    constructor(lessonID, dutch, english) {
+                        this.lessonID = lessonID;
+                        this.dutch = dutch;
+                        this.english = english;
+                        this.numWrong = 0;
+                        this.numRight = 0;
+                    }
+
+                }  // Word class
+
+            return Word;
+
+        }  // outer function
+
+    ]);
+
+
+})(angular.module('DutchApp'));
+
+

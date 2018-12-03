@@ -14,17 +14,15 @@
                 },
 
 
-                MODE:
+                MODES:
                 {
-                    RANDOM: 'random',
-                    VERBS: 'verbs',
-                    NOUNS: 'nouns',
-                    ADJECTIVES: 'adjectives',
-                    ADVERBS: 'adverbs',
-                    PREPOSITIONS: 'prepositions',
-                    PHRASES: 'phrases',
-                    //                SIMPLE_PAST: 'simple past',
-                    //                PAST_PERFECT: 'past perfect',
+                    ALL: { display: 'All', value: 'all' },
+                    VERBS: { display: 'Verbs', value: 'verbs' },
+                    NOUNS: { display: 'Nouns', value: 'nouns' },
+                    ADJECTIVES: { display: 'Adjectives', value: 'adjectives' },
+                    ADVERBS: { display: 'Adverbs', value: 'adverbs' },
+                    PREPOSITIONS: { display: 'Prepositions', value: 'prepositions' },
+                    PHRASES: { display: 'Phrases', value: 'phrases' },
                 }
 
             };

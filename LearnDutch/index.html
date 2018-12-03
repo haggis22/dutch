@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Learn Dutch flash cards</title>
+
+    <link type="text/css" rel="stylesheet" href="./dutch.css" />
+
+</head>
+<body ng-app="DutchApp" ng-controller="DutchCtrl" >
+
+    <div>
+        <!-- put the focus back on the Test Me button after revealing the answer -->
+        <button type="button" 
+                ng-click="testMe()"
+                focus-me="viewService.answer">
+            Test me
+        </button>
+
+        <span>
+
+            <select ng-model="viewService.mode" 
+                    ng-options="mode as mode.display for mode in viewService.modeOptions"></select>
+
+            <label>Lesson: <input type="text" id="txtLessonID" /></label>
+
+        </span>
+
+    </div>
+
+    <div class="cards" ng-cloak>
+        <div class="card question">
+            <span ng-show="viewService.word">
+                <span class="word">{{ viewService.word.english }}</span>
+                <span class="part">{{ viewService.word.getPart() }}</span>
+            </span>
+        </div>
+        <div class="card answer">
+            <span ng-show="viewService.answer" 
+                  ng-class="{ 'success': viewService.answer.isCorrect , 'failure': viewService.answer.isWrong } ">
+                <span class="word">{{ viewService.answer.word }}</span>
+                <span class="score"><span ng-show="viewService.answer.score > 0">+</span>{{ viewService.answer.score }}</>
+            </span>
+        </div>
+    </div>
+
+    <div class="user-panel">
+
+        <!-- focus on the input when the test word changes -->
+        <input type="text" 
+               ng-model="viewService.guess"
+               class="guess"
+               focus-me="viewService.word"
+                enter-action="cardService.checkAnswer()"/>
+
+    </div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.js"></script>
+    <script src="./dutch.js"></script>
+
+    <script>
+
+
+/*
+        (function () {
+
+
+            let currentWord = null;
+
+
+            $('#test-me').on('click', testMe);
+
+
+
+
+            function testMe() {
+
+
+                currentWord = chooseWord();
+
+                let mode = $('#selMode option:checked').val();
+
+                switch (mode) {
+
+                    case MODE.SIMPLE_PAST:
+                        currentWord.correctAnswers = currentWord.simplePast.slice();
+                        break;
+
+                    case MODE.PAST_PERFECT:
+                        currentWord.correctAnswers = [currentWord.pastPerfect];
+                        break;
+
+                    default:
+                        currentWord.correctAnswers = Array.isArray(currentWord.dutch) ? currentWord.dutch : [currentWord.dutch];
+                        break;
+
+                }
+
+
+                $('.card.question .word').text(currentWord.english);
+                $('.card.question .part').text('(' + currentWord.getPart() + ')');
+
+                // clear the answer
+                let answerCard = $('.card.answer span');
+                answerCard.text('');
+                answerCard.removeClass('success');
+                answerCard.removeClass('failure');
+
+
+                // clear the guess
+                let guessBox = $('#guess');
+                guessBox.val('');
+                guessBox.focus();
+
+                // stop any possible enter key from revealing the answer prematurely
+                event.preventDefault();
+
+            }
+
+            $('#guess').on('keyup', function (event) {
+
+
+            });
+
+
+
+        })();
+
+*/
+
+    </script>
+
+</body>
+</html>

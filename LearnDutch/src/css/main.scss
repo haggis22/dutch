@@ -1,0 +1,55 @@
+﻿.cards {
+    clear: both;
+    margin-top: 15px;
+    background: pink;
+}
+
+.card {
+    display: block;
+    font-size: 40px;
+    padding: 10px;
+    min-width: 200px;
+    height: 50px;
+    white-space: nowrap;
+    border: 2px solid black;
+
+    &.question {
+        background-color: aliceblue;
+
+        .part {
+            font-size: 0.4em;
+            font-style: italic;
+        }
+    }
+
+    &.answer {
+        background-color: lightgrey;
+
+        .score {
+            font-size: 0.4em;
+            font-style: italic;
+        }
+    }
+}
+
+
+.user-panel {
+    margin-top: 15px;
+
+    .guess {
+        font-size: 40px;
+        width: 400px;
+        height: 50px;
+        white-space: nowrap;
+        padding: 10px;
+    }
+}
+
+
+.success {
+    color: green;
+}
+
+.failure {
+    color: red;
+}
