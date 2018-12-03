@@ -2,9 +2,9 @@
 
     "use strict";
 
-    app.factory('dutch.cardService', [ 'dutch.constants', 'dutch.viewService', 'dutch.dictionaryService',
+    app.factory('dutch.cardService', [ 'dutch.constants', 'dutch.viewService', 'dutch.dictionaryService', 'dutch.scoreService',
 
-        function (constants, viewService, dictionaryService) {
+        function (constants, viewService, dictionaryService, scoreService) {
 
             let service =
             {
@@ -30,13 +30,36 @@
 
                 for (let word of words)
                 {
-                    // give me extra work on ones I have missed already
-                    // If numWrong == numRight, then it will get added once
-                    // If numWrong = 1 and numRight = 0, then it will get added 3 times
-                    for (let count = 0; count <= 2 * (word.numWrong - word.numRight); count++)
+                    let scoreToday = scoreService.getScore({ period: constants.PERIODS.TODAY, mode: viewService.mode, tense: viewService.tense, word: word });
+
+                    if (scoreToday)
                     {
+                        // give me extra work on ones I have missed already
+                        // If numRight > numWrong then it won't get added at all
+                        // If numWrong == numRight, then it will get added once
+                        // If numWrong = 1 and numRight = 0, then it will get added 3 times
+                        for (let count = 0; count <= 2 * (scoreToday.numWrong - scoreToday.numRight); count++) {
+                            options.push(word);
+                        }
+
+                    }
+                    else
+                    {
+                        // we haven't seen it yet today
                         options.push(word);
                     }
+
+                    let scoreAllTime = scoreService.getScore({ period: constants.PERIODS.ALLTIME, mode: viewService.mode, tense: viewService.tense, word: word });
+
+                    if (scoreAllTime) {
+
+                        // give me extra work on ones I have missed in the past
+                        for (let count = 0; count < Math.floor(scoreAllTime.numWrong / 3); count++) {
+                            options.push(word);
+                        }
+
+                    }
+
 
                 }
 
@@ -109,17 +132,18 @@
                 if (viewService.word.correctAnswers.find(a => a == myAnswer)) {
 
                     answer.isCorrect = true;
-                    viewService.word.numRight++;
+                    scoreService.markCorrect(viewService.word, viewService.mode, viewService.tense);
 
                 }
                 else {
 
                     answer.isWrong = true;
-                    viewService.word.numWrong++;
+                    scoreService.markWrong(viewService.word, viewService.mode, viewService.tense);
 
                 }
 
-                answer.score = viewService.word.numRight - viewService.word.numWrong;
+                answer.scoreToday = scoreService.getScore({ period: constants.PERIODS.TODAY, mode: viewService.mode, tense: viewService.tense, word: viewService.word });
+                answer.scoreAllTime = scoreService.getScore({ period: constants.PERIODS.ALLTIME, mode: viewService.mode, tense: viewService.tense, word: viewService.word });
 
                 viewService.answer = answer;
 

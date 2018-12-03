@@ -11,8 +11,6 @@
                         this.lessonID = lessonID;
                         this.dutch = Array.isArray(dutch) ? dutch : [dutch]
                         this.english = english;
-                        this.numWrong = 0;
-                        this.numRight = 0;
                     }
 
                 }  // Word class

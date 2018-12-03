@@ -85,9 +85,9 @@
 
     "use strict";
 
-    app.factory('dutch.cardService', [ 'dutch.constants', 'dutch.viewService', 'dutch.dictionaryService',
+    app.factory('dutch.cardService', [ 'dutch.constants', 'dutch.viewService', 'dutch.dictionaryService', 'dutch.scoreService',
 
-        function (constants, viewService, dictionaryService) {
+        function (constants, viewService, dictionaryService, scoreService) {
 
             let service =
             {
@@ -113,13 +113,36 @@
 
                 for (let word of words)
                 {
-                    // give me extra work on ones I have missed already
-                    // If numWrong == numRight, then it will get added once
-                    // If numWrong = 1 and numRight = 0, then it will get added 3 times
-                    for (let count = 0; count <= 2 * (word.numWrong - word.numRight); count++)
+                    let scoreToday = scoreService.getScore({ period: constants.PERIODS.TODAY, mode: viewService.mode, tense: viewService.tense, word: word });
+
+                    if (scoreToday)
                     {
+                        // give me extra work on ones I have missed already
+                        // If numRight > numWrong then it won't get added at all
+                        // If numWrong == numRight, then it will get added once
+                        // If numWrong = 1 and numRight = 0, then it will get added 3 times
+                        for (let count = 0; count <= 2 * (scoreToday.numWrong - scoreToday.numRight); count++) {
+                            options.push(word);
+                        }
+
+                    }
+                    else
+                    {
+                        // we haven't seen it yet today
                         options.push(word);
                     }
+
+                    let scoreAllTime = scoreService.getScore({ period: constants.PERIODS.ALLTIME, mode: viewService.mode, tense: viewService.tense, word: word });
+
+                    if (scoreAllTime) {
+
+                        // give me extra work on ones I have missed in the past
+                        for (let count = 0; count < Math.floor(scoreAllTime.numWrong / 3); count++) {
+                            options.push(word);
+                        }
+
+                    }
+
 
                 }
 
@@ -192,17 +215,18 @@
                 if (viewService.word.correctAnswers.find(a => a == myAnswer)) {
 
                     answer.isCorrect = true;
-                    viewService.word.numRight++;
+                    scoreService.markCorrect(viewService.word, viewService.mode, viewService.tense);
 
                 }
                 else {
 
                     answer.isWrong = true;
-                    viewService.word.numWrong++;
+                    scoreService.markWrong(viewService.word, viewService.mode, viewService.tense);
 
                 }
 
-                answer.score = viewService.word.numRight - viewService.word.numWrong;
+                answer.scoreToday = scoreService.getScore({ period: constants.PERIODS.TODAY, mode: viewService.mode, tense: viewService.tense, word: viewService.word });
+                answer.scoreAllTime = scoreService.getScore({ period: constants.PERIODS.ALLTIME, mode: viewService.mode, tense: viewService.tense, word: viewService.word });
 
                 viewService.answer = answer;
 
@@ -224,6 +248,8 @@
         let constants =
             {
 
+                STORAGE_KEY_SCORES: 'dutch.scores',
+
                 MODES:
                 {
                     ALL: 'All',
@@ -240,7 +266,14 @@
                     PRESENT: 'Present',
                     SIMPLE_PAST: 'Simple Past',
                     PAST_PERFECT: 'Past Perfect'
+                },
+
+                PERIODS:
+                {
+                    TODAY: "today",
+                    ALLTIME: "alltime"
                 }
+
 
             };
 
@@ -901,6 +934,148 @@
 
     "use strict";
 
+    app.factory('dutch.scoreService', [ 'dutch.constants',
+
+        function (constants) {
+
+            const REGULAR = "regular";
+
+            return {
+
+                scores: loadScores(),
+                markCorrect: markCorrect,
+                markWrong: markWrong,
+                getScore: getScore
+
+            };
+
+            function loadScores()
+            {
+                // it's stored as a string, so convert it back to a JavaScript object
+                let savedScores = JSON.parse(localStorage.getItem(constants.STORAGE_KEY_SCORES));
+
+                if (savedScores != null)
+                {
+                    delete savedScores[constants.PERIODS.TODAY];
+                }
+                else
+                {
+                    savedScores = {};
+
+                }  // scores were not already saved
+
+                return savedScores;
+
+            }  // loadScores
+
+
+            function saveScores()
+            {
+
+                // we need to stringify the JSON or it will just store "[Object object]"
+                localStorage.setItem(constants.STORAGE_KEY_SCORES, JSON.stringify(this.scores));
+
+            }  // saveScores
+
+
+            function determineScoreSection(search)
+            {
+                if (search.mode == constants.MODES.VERBS)
+                {
+                    switch (search.tense) {
+                        case constants.TENSES.SIMPLE_PAST:
+                        case constants.TENSES.PAST_PERFECT:
+                            return tense;
+                    }
+                }
+
+                return REGULAR;
+            }
+
+            function findWordScore(search, forceCreate)
+            {
+                let section = determineScoreSection(search);
+
+                if (!this.scores.hasOwnProperty(search.period))
+                {
+                    if (!forceCreate)
+                    {
+                        return null;
+                    }
+
+                    this.scores[search.period] = {};
+                }
+
+                if (!this.scores[search.period].hasOwnProperty(search.section)) {
+
+                    if (!forceCreate)
+                    {
+                        return null;
+                    }
+
+                    this.scores[search.period][search.section] = {};
+                }
+
+                if (!this.scores[search.period][search.section].hasOwnProperty(search.word.english)) {
+
+                    if (!forceCreate)
+                    {
+                        return null;
+                    }
+
+                    this.scores[search.period][search.section][search.word.english] =
+                        {
+                            numRight: 0,
+                            numWrong: 0
+                        };
+                }
+
+                return this.scores[search.period][search.section][search.word.english];
+            }
+
+
+            function markCorrect(word, mode, tense)
+            {
+                let todayScore = findWordScore.call(this, { period: constants.PERIODS.TODAY, word: word, mode: mode, tense: tense }, true);
+                todayScore.numRight++;
+
+                let allTimeScore = findWordScore.call(this, { period: constants.PERIODS.ALLTIME, word: word, mode: mode, tense: tense }, true);
+                allTimeScore.numRight++;
+
+                saveScores.call(this);
+
+            }  // markCorrect
+
+
+            function markWrong(word, mode, tense) {
+
+                let todayScore = findWordScore.call(this, { period: constants.PERIODS.TODAY, word: word, mode: mode, tense: tense }, true);
+                todayScore.numWrong++;
+
+                let allTimeScore = findWordScore.call(this, { period: constants.PERIODS.ALLTIME, word: word, mode: mode, tense: tense }, true);
+                allTimeScore.numWrong++;
+
+                saveScores.call(this);
+
+            }  // markWrong
+
+
+            // search = object with keys period, mode, tense, word
+            function getScore(search)
+            {
+                return findWordScore.call(this, search, false);
+
+            }  // getScore
+
+        }
+
+    ]);
+
+})(angular.module('DutchApp'));
+(function (app) {
+
+    "use strict";
+
     app.factory('dutch.viewService', [ 'dutch.constants',
 
         function (constants) {
@@ -1148,8 +1323,6 @@
                         this.lessonID = lessonID;
                         this.dutch = Array.isArray(dutch) ? dutch : [dutch]
                         this.english = english;
-                        this.numWrong = 0;
-                        this.numRight = 0;
                     }
 
                 }  // Word class

@@ -7,6 +7,8 @@
         let constants =
             {
 
+                STORAGE_KEY_SCORES: 'dutch.scores',
+
                 MODES:
                 {
                     ALL: 'All',
@@ -23,7 +25,14 @@
                     PRESENT: 'Present',
                     SIMPLE_PAST: 'Simple Past',
                     PAST_PERFECT: 'Past Perfect'
+                },
+
+                PERIODS:
+                {
+                    TODAY: "today",
+                    ALLTIME: "alltime"
                 }
+
 
             };
 

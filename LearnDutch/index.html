@@ -86,7 +86,10 @@
                       ng-class="{ 'success': viewService.answer.isCorrect , 'failure': viewService.answer.isWrong } ">
                     <span class="word">{{ viewService.answer.word }}</span>
                     <span class="score">
-                        <span ng-show="viewService.answer.score > 0">+</span>{{ viewService.answer.score }}</>
+                        today: <span ng-show="viewService.answer.scoreToday.numRight > viewService.answer.scoreToday.numWrong">+</span>{{ (viewService.answer.scoreToday.numRight - viewService.answer.scoreToday.numWrong) | number:0 }}, 
+                    </span>
+                    <span class="score">
+                        all-time: {{ viewService.answer.scoreAllTime.numRight | number:0 }} / {{ viewService.answer.scoreAllTime.numWrong | number:0 }}</>
                     </span>
             </div>
         </div>
