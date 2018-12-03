@@ -65,19 +65,37 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Web.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="gulpfile.js" />
+    <Content Include="src\app\app.js" />
+    <Content Include="src\app\cards-controller.js" />
+    <Content Include="src\classes\parts-of-speech\adverb.js" />
+    <Content Include="src\classes\parts-of-speech\phrase.js" />
+    <Content Include="src\classes\parts-of-speech\nummer.js" />
+    <Content Include="src\classes\parts-of-speech\preposition.js" />
+    <Content Include="src\classes\parts-of-speech\adjective.js" />
+    <Content Include="src\classes\parts-of-speech\word.js" />
+    <Content Include="src\classes\parts-of-speech\verb.js" />
+    <Content Include="src\directives\focus-me.js" />
+    <Content Include="src\directives\enter-action.js" />
+    <Content Include="src\services\cardService.js" />
+    <Content Include="src\services\score-service.js" />
+    <Content Include="src\services\view-service.js" />
+    <Content Include="src\classes\parts-of-speech\noun.js" />
+    <Content Include="src\services\constants.js" />
+    <Content Include="src\services\dictionaryService.js" />
+    <Content Include="index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="package.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="src\css\main.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="src\css\cloak.scss" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
