@@ -63,13 +63,20 @@
     app.directive('focusMe', ['$timeout', function ($timeout) {
         return {
             link: function (scope, element, attrs) {
-                scope.$watch(attrs.focusMe, function (value) {
-                    if (value) {
+
+                // this will trigger if ANY of the comma-separated values are true
+                scope.$watchGroup(attrs.focusMe.split(','), function (valueArray) {
+
+                    // if any element in the array evaluates to true, then focus
+                    if (valueArray.some(v => v))
+                    {
                         // the timeout will give any container time to appear
                         $timeout(function () {
                             element[0].focus();
                         }, 10);
+
                     }
+
                 });
             }
         };
@@ -100,6 +107,8 @@
 
                 // Clear any guesses and the previous answer, if any
                 viewService.guess = viewService.answer = null;
+
+                viewService.justStarted = false;
 
                 let words = dictionaryService.getWords(mode);
 
@@ -499,7 +508,7 @@
             words.push(new Noun(13, 'kunst', 'art'));
             words.push(new Noun(13, 'de verjaardag', 'the birthday'));
             words.push(new Verb(13, 'een verjaardag vieren', 'to celebrate a birthday'));
-            words.push(new Phrase(13, 'hij is jarig', 'it’s his birthday'));
+            words.push(new Phrase(13, 'hij is jarig', 'it\'s his birthday'));
             words.push(new Verb(13, 'zingen', 'to sing'));
             words.push(new Verb(13, 'dansen', 'to dance'));
             words.push(new Verb(13, 'winkelen', 'to go shopping'));
@@ -881,6 +890,7 @@
 
             let view =
                 {
+                    justStarted: true,
                     mode: constants.MODES.ALL,
                     modeOptions: []
 

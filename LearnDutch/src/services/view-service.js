@@ -8,6 +8,7 @@
 
             let view =
                 {
+                    justStarted: true,
                     mode: constants.MODES.ALL,
                     modeOptions: []
 

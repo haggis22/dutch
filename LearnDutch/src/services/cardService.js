@@ -20,6 +20,8 @@
                 // Clear any guesses and the previous answer, if any
                 viewService.guess = viewService.answer = null;
 
+                viewService.justStarted = false;
+
                 let words = dictionaryService.getWords(mode);
 
                 let options = [];

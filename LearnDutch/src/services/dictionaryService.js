@@ -266,7 +266,7 @@
             words.push(new Noun(13, 'kunst', 'art'));
             words.push(new Noun(13, 'de verjaardag', 'the birthday'));
             words.push(new Verb(13, 'een verjaardag vieren', 'to celebrate a birthday'));
-            words.push(new Phrase(13, 'hij is jarig', 'it’s his birthday'));
+            words.push(new Phrase(13, 'hij is jarig', 'it\'s his birthday'));
             words.push(new Verb(13, 'zingen', 'to sing'));
             words.push(new Verb(13, 'dansen', 'to dance'));
             words.push(new Verb(13, 'winkelen', 'to go shopping'));
@@ -538,7 +538,7 @@
             words.push(new Noun(24, 'het weer', 'the weather'));
             words.push(new Phrase(24, ['wat voor weer wordt het?'], ['wat voor weer wordt het'], 'what will be the weather?'));
             words.push(new Noun(24, 'het weerbericht', 'the weather forecast'));
-            words.push(new Noun(24, 'het bericht', 'the message'));
+            words.push(new Noun(24, ['het bericht', 'de boodschap'], 'the message'));
             //            words.push(new Phrase(24, 'lekker weer, hè', 'nice weather isn’t it?'));
             words.push(new Phrase(24, 'zeker', '(for) sure'));
             words.push(new Phrase(24, ['mooi weer', 'lekker weer'], 'nice weather'));
