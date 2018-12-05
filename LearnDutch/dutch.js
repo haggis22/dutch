@@ -224,7 +224,7 @@
                     return;
                 }
 
-                let myAnswer = viewService.guess.trim().toLowerCase();
+                let myAnswer = muricafy(viewService.guess.trim().toLowerCase());
 
                 let answer =
                     {
