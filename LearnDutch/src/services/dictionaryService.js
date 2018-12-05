@@ -361,7 +361,7 @@
             words.push(new Noun(17, 'de riem', 'the belt'));
             words.push(new Noun(17, 'het T-shirt', 'the T-shirt'));
             words.push(new Noun(17, 'het onderhemd', 'the undershirt'));
-            words.push(new Noun(17, 'het overhemd', 'the shirt'));
+            words.push(new Noun(17, ['het overhemd', 'het hemd', 'het shirt'], 'the shirt'));
             words.push(new Noun(17, 'de blouse', 'the blouse, the shirt'));
             words.push(new Noun(17, 'het pak', 'the suit'));
             words.push(new Noun(17, ['het colbert', 'de colbert'], 'the suit jacket'));
