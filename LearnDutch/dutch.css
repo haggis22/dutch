@@ -33,6 +33,8 @@
         .user-panel .cards .card.question .part {
           font-size: 0.4em;
           font-style: italic; }
+        .user-panel .cards .card.question .lesson {
+          font-size: 0.3em; }
       .user-panel .cards .card.answer {
         background-color: lightgrey; }
         .user-panel .cards .card.answer .score {

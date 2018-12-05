@@ -115,21 +115,22 @@
                 {
                     let scoreToday = scoreService.getScore({ period: constants.PERIODS.TODAY, mode: viewService.mode, tense: viewService.tense, word: word });
 
+                    let numInstances = 0;
+
                     if (scoreToday)
                     {
                         // give me extra work on ones I have missed already
                         // If numRight > numWrong then it won't get added at all
                         // If numWrong == numRight, then it will get added once
                         // If numWrong = 1 and numRight = 0, then it will get added 3 times
-                        for (let count = 0; count <= 2 * (scoreToday.numWrong - scoreToday.numRight); count++) {
-                            options.push(word);
-                        }
+                        numInstances += Math.min(scoreToday.numWrong - scoreToday.numRight + 1, 0);
 
                     }
                     else
                     {
-                        // we haven't seen it yet today
-                        options.push(word);
+                        // we haven't seen it yet today, so add it once
+                        numInstances++;
+
                     }
 
                     let scoreAllTime = scoreService.getScore({ period: constants.PERIODS.ALLTIME, mode: viewService.mode, tense: viewService.tense, word: word });
@@ -137,10 +138,13 @@
                     if (scoreAllTime) {
 
                         // give me extra work on ones I have missed in the past
-                        for (let count = 0; count < Math.floor(scoreAllTime.numWrong / 3); count++) {
-                            options.push(word);
-                        }
+                        numInstances += Math.floor(scoreAllTime.numWrong / 3);
 
+                    }
+
+                    for (let i = 0; i < numInstances; i++)
+                    {
+                        options.push(word);
                     }
 
 
@@ -196,6 +200,22 @@
             }  // testMe
 
 
+            function muricafy(text) 
+            {
+
+                return text
+                    .trim()
+                    .toLowerCase()
+                    .replace(/[\xe0\xe1\xe2\xe3\xe4\xe5]/g, "a")
+                    .replace(/[\xe7]/g, "c")
+                    .replace(/[\xe8\xe9\xea\xeb]/g, "e")
+                    .replace(/[\xec\xed\xee\xef]/g, "i")
+                    .replace(/[\xf2\xf3\xf4\xf5\xf6\xf7\xf8]/g, "o")
+                    .replace(/[\xf9\xfa\xfb\xfc]/g, "u");
+
+            }  // muricafy
+
+
             function checkAnswer() {
 
                 if (!viewService.guess || !viewService.guess.trim()) 
@@ -204,7 +224,7 @@
                     return;
                 }
 
-                let myAnswer = viewService.guess.trim();
+                let myAnswer = viewService.guess.trim().toLowerCase();
 
                 let answer =
                     {
@@ -212,7 +232,7 @@
                         score: 0
                     };
 
-                if (viewService.word.correctAnswers.find(a => a == myAnswer)) {
+                if (viewService.word.correctAnswers.find(a => muricafy(a) == myAnswer)) {
 
                     answer.isCorrect = true;
                     scoreService.markCorrect(viewService.word, viewService.mode, viewService.tense);
@@ -388,7 +408,7 @@
             words.push(new Phrase(5, 'hoeveel', 'how much'));
             words.push(new Noun(5, 'de bloem', 'the flower'));
             words.push(new Adverb(5, 'waarom', 'why'));
-            words.push(new Adverb(5, 'daarom', 'that’s why'));
+            words.push(new Adverb(5, 'daarom', 'that\'s why'));
             words.push(new Phrase(5, ['want', 'omdat'], 'because'));
             words.push(new Phrase(5, 'maar', 'but'));
             words.push(new Preposition(5, 'behalve', 'except'));
@@ -419,7 +439,7 @@
             words.push(new Noun(6, 'de school', 'the school'));
             words.push(new Noun(6, 'de universiteit', 'the university'));
             words.push(new Nummer(7, 'nul', 'zero'));
-            words.push(new Nummer(7, 'één', 'one'));
+            words.push(new Nummer(7, '\xe9\xe9n', 'one'));
             words.push(new Nummer(7, 'twee', 'two'));
             words.push(new Nummer(7, 'drie', 'three'));
             words.push(new Nummer(7, 'vier', 'four'));
@@ -435,7 +455,7 @@
             words.push(new Nummer(7, 'veertien', 'fourteen'));
             words.push(new Nummer(7, 'vijftien', 'fifteen'));
             words.push(new Nummer(7, 'twintig', 'twenty'));
-            words.push(new Nummer(7, 'éénentwintig', 'twenty one'));
+            words.push(new Nummer(7, '\xe9\xe9nentwintig', 'twenty one'));
             words.push(new Nummer(7, 'dertig', 'thirty'));
             words.push(new Nummer(7, 'veertig', 'forty'));
             words.push(new Nummer(7, 'vijftig', 'fifty'));
@@ -822,10 +842,10 @@
             words.push(new Verb(23, 'bouwen', 'to build'));
             words.push(new Verb(23, 'blijven', 'to stay'));
             words.push(new Noun(24, 'het weer', 'the weather'));
-            words.push(new Phrase(24, ['wat voor weer wordt het?'], ['wat voor weer wordt het'], 'what will be the weather?'));
+            words.push(new Phrase(24, ['wat voor weer wordt het', 'wat voor weer wordt het'], 'what will be the weather?'));
             words.push(new Noun(24, 'het weerbericht', 'the weather forecast'));
             words.push(new Noun(24, ['het bericht', 'de boodschap'], 'the message'));
-            //            words.push(new Phrase(24, 'lekker weer, hè', 'nice weather isn’t it?'));
+            //            words.push(new Phrase(24, 'lekker weer, hè', 'nice weather isn\'t it'));
             words.push(new Phrase(24, 'zeker', '(for) sure'));
             words.push(new Phrase(24, ['mooi weer', 'lekker weer'], 'nice weather'));
             words.push(new Noun(24, 'vandaag', 'today'));
