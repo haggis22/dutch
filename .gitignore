@@ -3,4 +3,6 @@ LearnDutch/node_modules/
 packages/
 LearnDutch/bin/
 LearnDutch/obj/
+LearnDutch/dutch.js
+LearnDutch/dutch.css
 **/*.user
