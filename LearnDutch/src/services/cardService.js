@@ -128,7 +128,9 @@
                     .replace(/[\xe8\xe9\xea\xeb]/g, "e")
                     .replace(/[\xec\xed\xee\xef]/g, "i")
                     .replace(/[\xf2\xf3\xf4\xf5\xf6\xf7\xf8]/g, "o")
-                    .replace(/[\xf9\xfa\xfb\xfc]/g, "u");
+                    .replace(/[\xf9\xfa\xfb\xfc]/g, "u")
+                    .replace(/[^a-z ]/g, "")                // Nothing but letters and spaces
+                    .replace('/\s\s+/g', ' ');              // any time it finds more than one whitespace character, it turns them all into a single space
 
             }  // muricafy
 
