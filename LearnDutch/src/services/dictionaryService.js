@@ -436,8 +436,10 @@
             words.push(new Noun(20, ['de oma', 'de grootmoeder'], 'the grandmother'));
             words.push(new Noun(20, 'de tante', 'the aunt'));
             words.push(new Noun(20, 'de oom', 'the uncle'));
-            words.push(new Noun(20, 'de neef', 'the cousin, the nephew'));
-            words.push(new Noun(20, 'de nicht', 'the cousin, the niece'));
+            words.push(new Noun(20, 'de neef', 'the cousin (male)'));
+            words.push(new Noun(20, 'de neef', 'the nephew'));
+            words.push(new Noun(20, 'de nicht', 'the cousin (female)'));
+            words.push(new Noun(20, 'de nicht', 'the niece'));
             words.push(new Noun(20, 'het kind', 'the child'));
             words.push(new Noun(20, 'het kleinkind', 'the grandchild'));
             words.push(new Noun(20, 'de vriend', 'the (boy) friend'));
