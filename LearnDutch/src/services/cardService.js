@@ -59,6 +59,21 @@
 
                     }
 
+                    if (viewService.onlyWrong) {
+
+                        if (scoreAllTime && scoreAllTime.numWrong > scoreAllTime.numRight)
+                        {
+                            // allow the word
+                        }
+                        else
+                        {
+                            // I've never had this word, so skip it
+                            numInstances = 0;
+                        }
+
+                    }
+
+
                     for (let i = 0; i < numInstances; i++)
                     {
                         options.push(word);
@@ -66,6 +81,7 @@
 
 
                 }
+
 
                 let lessonID = parseInt(viewService.lessonID, 10);
                 if (!isNaN(lessonID))

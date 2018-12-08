@@ -48,6 +48,16 @@
 
                     <tr>
                         <td colspan="2">
+                            <label>
+                                <input type="checkbox"
+                                       ng-model="viewService.onlyWrong" />
+                                Only words I have negative scores
+                            </label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">
                             <!-- put the focus back on the Test Me button after revealing the answer -->
                             <button type="button"
                                     ng-click="cardService.testMe()"
