@@ -982,7 +982,7 @@
             words.push(new Verb(39, 'kosten', 'to cost'));
             words.push(new Verb(39, 'ruiken', 'to smell'));
             words.push(new Verb(39, 'leiden', 'to lead'));
-            words.push(new Noun(39, 'dak', 'the roof'));
+            words.push(new Noun(39, 'het dak', 'the roof'));
             words.push(new Adjective(39, 'heet', 'hot'));
             words.push(new Noun(39, 'de markt', 'the market'));
             words.push(new Noun(39, 'het geld', 'the money'));
