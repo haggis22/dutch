@@ -754,7 +754,7 @@
             words.push(new Noun(31, 'de perzik', 'the peach'));
             words.push(new Noun(31, 'de abrikoos', 'the apricot'));
             words.push(new Noun(31, 'de sinaasappel', 'the orange'));
-            words.push(new Noun(31, 'de mandarijn', 'the mandarin'));
+            words.push(new Noun(31, 'de mandarijn', 'the mandarin orange'));
             words.push(new Noun(31, 'de citroen', 'the lemon'));
             words.push(new Noun(31, 'de pruim', 'the plum'));
             words.push(new Noun(31, 'de meloen', 'the melon'));
