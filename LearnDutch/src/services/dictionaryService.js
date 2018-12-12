@@ -603,7 +603,7 @@
             words.push(new Adjective(26, 'duizelig', 'dizzy'));
             words.push(new Noun(26, 'de vergiftiging', 'the poisoning'));
             words.push(new Noun(26, 'de pijn', 'the ache'));
-            words.push(new Noun(26, 'zeer', 'the ache'));
+            words.push(new Adjective(26, 'zeer', 'sore'));
             words.push(new Noun(26, 'de behandeling', 'the treatment'));
             words.push(new Noun(26, 'de huisarts', 'the general practitioner'));
             words.push(new Noun(26, 'de patiënt', 'the patient'));
