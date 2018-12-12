@@ -703,8 +703,7 @@
             words.push(new Adjective(29, 'serieus', 'serious'));
             words.push(new Noun(30, 'de maaltijd', 'the meal'));
             words.push(new Noun(30, 'het ontbijt', 'the breakfast'));
-            words.push(new Noun(30, 'de lunch', 'the lunch'));
-            words.push(new Noun(30, 'het middageten', 'the lunch'));
+            words.push(new Noun(30, ['de lunch', 'het middageten'], 'the lunch'));
             words.push(new Noun(30, 'het avondeten', 'the dinner'));
             words.push(new Verb(30, 'koken', 'to cook'));
             words.push(new Noun(30, 'de kok', 'the cook'));
