@@ -53,10 +53,12 @@
                     switch (search.tense) {
                         case constants.TENSES.SIMPLE_PAST:
                         case constants.TENSES.PAST_PERFECT:
-                            return tense;
+                            return search.tense;
                     }
                 }
 
+                // we want to treat PRESENT tense verbs the same as any other words so that they would be grouped
+                // together on a general quiz
                 return REGULAR;
             }
 
@@ -74,31 +76,31 @@
                     this.scores[search.period] = {};
                 }
 
-                if (!this.scores[search.period].hasOwnProperty(search.section)) {
+                if (!this.scores[search.period].hasOwnProperty(section)) {
 
                     if (!forceCreate)
                     {
                         return null;
                     }
 
-                    this.scores[search.period][search.section] = {};
+                    this.scores[search.period][section] = {};
                 }
 
-                if (!this.scores[search.period][search.section].hasOwnProperty(search.word.english)) {
+                if (!this.scores[search.period][section].hasOwnProperty(search.word.english)) {
 
                     if (!forceCreate)
                     {
                         return null;
                     }
 
-                    this.scores[search.period][search.section][search.word.english] =
+                    this.scores[search.period][section][search.word.english] =
                         {
                             numRight: 0,
                             numWrong: 0
                         };
                 }
 
-                return this.scores[search.period][search.section][search.word.english];
+                return this.scores[search.period][section][search.word.english];
             }
 
 
