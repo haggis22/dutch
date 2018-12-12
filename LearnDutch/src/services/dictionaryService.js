@@ -175,7 +175,6 @@
             words.push(new Verb(8, 'luisteren', 'to listen'));
             words.push(new Verb(8, 'zien', 'to see'));
             words.push(new Verb(8, 'kijken', 'to look'));
-            words.push(new Verb(8, 'weten', 'to know'));
             words.push(new Verb(8, 'leren', 'to learn'));
             words.push(new Verb(8, 'slapen', 'to sleep'));
             words.push(new Verb(8, 'lezen', 'to read'));
@@ -391,10 +390,10 @@
             words.push(new Verb(18, 'helpen', 'to help'));
             words.push(new Verb(18, 'houden', 'to hold, to keep'));
             words.push(new Verb(18, 'houden van', 'to love'));
-            words.push(new Verb(18, 'weten', 'to know'));
-            words.push(new Verb(18, 'kennen', 'to know'));
+            words.push(new Verb(18, 'weten', 'to know (a thing)'));
+            words.push(new Verb(18, 'kennen', 'to know (a person)'));
             words.push(new Verb(18, 'leuk vinden', 'to like'));
-            words.push(new Verb(18, 'laten', 'to leave'));
+            words.push(new Verb(18, 'verlaten', 'to leave (abandon, quit)'));
             words.push(new Verb(18, 'verliezen', 'to lose'));
             words.push(new Verb(18, 'winnen', 'to win'));
             words.push(new Verb(18, 'maken', 'to make'));
@@ -778,7 +777,7 @@
             words.push(new Verb(32, 'vergelijken', 'to compare'));
             words.push(new Verb(32, 'vergissen', 'to be mistaken'));
             words.push(new Verb(32, 'verkopen', 'to sell'));
-            words.push(new Verb(32, 'vertrekken', 'to leave'));
+            words.push(new Verb(32, 'vertrekken', 'to leave (depart)'));
             words.push(new Verb(32, 'vertrouwen', 'to trust'));
             words.push(new Verb(32, 'verwachten', 'to expect'));
             words.push(new Adjective(32, 'in verwachting', 'expecting (a baby)'));
@@ -898,7 +897,7 @@
             words.push(new Verb(36, 'uitnodigen', 'to invite'));
             words.push(new Noun(36, 'het bezoek', 'the visit'));
             words.push(new Noun(36, 'het bezoek', 'the visitors'));
-            words.push(new Verb(36, 'ontvangen', 'to receive'));
+            words.push(new Verb(36, 'ontvangen', 'to receive (not the one with get)'));
             words.push(new Noun(36, 'de geboorte', 'the birth'));
             words.push(new Noun(36, 'de bruiloft', 'the wedding'));
             words.push(new Noun(36, 'de verjaardag', 'the birthday'));
@@ -937,6 +936,7 @@
             words.push(new Adjective(38, 'nat', 'wet'));
             words.push(new Adjective(38, 'droog', 'dry'));
             words.push(new Adjective(38, 'algemeen', 'general'));
+            words.push(new Phrase(38, 'in het algemeen', 'in general'));
             words.push(new Adjective(38, 'bijzonder', 'special'));
             words.push(new Adjective(38, 'gebruikelijk', 'common'));
             words.push(new Adjective(38, 'dom', 'stupid'));
@@ -972,8 +972,8 @@
             words.push(new Noun(39, 'de vlag', 'the flag'));
             words.push(new Noun(39, 'toekomst', 'the future'));
             words.push(new Noun(39, 'het einde', 'the end'));
-            words.push(new Noun(39, 'maan', 'the moon'));
-            words.push(new Noun(39, 'ster', 'the star'));
+            words.push(new Noun(39, 'de maan', 'the moon'));
+            words.push(new Noun(39, 'de ster', 'the star'));
             words.push(new Noun(39, 'de schaduw', 'the shadow / shade'));
             words.push(new Verb(39, 'moeten', 'must / have to / should'));
             words.push(new Verb(39, 'zetten', 'to put'));
@@ -1016,6 +1016,7 @@
             words.push(new Noun(40, 'het boek', 'the book'));
             words.push(new Noun(40, 'de les', 'the lesson'));
             words.push(new Noun(40, 'het woord', 'the word'));
+            words.push(new Noun(41, 'het verhaal', 'the story'));
 
 
             function getWords(mode, tense) {
