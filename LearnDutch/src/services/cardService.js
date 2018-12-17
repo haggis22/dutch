@@ -20,9 +20,6 @@
                 // Clear any guesses and the previous answer, if any
                 viewService.guess = viewService.answer = null;
 
-                // clear the word so that if we get the same word 2 times in a row it still puts the cursor in the answer box
-                viewService.word = null;
-
                 viewService.noWords = false;
 
                 viewService.justStarted = false;
@@ -130,7 +127,7 @@
 
                 }
 
-                viewService.word = word;
+                viewService.setWord(word);
 
 
             }  // testMe
