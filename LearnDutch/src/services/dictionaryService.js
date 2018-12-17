@@ -831,7 +831,7 @@
             words.push(new Adjective(34, 'alleen', 'alone'));
             words.push(new Adverb(34, 'altijd', 'always'));
             words.push(new Preposition(34, 'door', 'through'));
-            words.push(new Adverb(34, 'dus', 'so'));
+            words.push(new Adverb(34, 'dus', 'so (therefore)'));
             words.push(new Adjective(34, 'genoeg', 'enough'));
             words.push(new Adverb(34, 'bijna', 'almost'));
             words.push(new Phrase(34, 'bijvoorbeeld', 'for example'));
@@ -905,7 +905,7 @@
             words.push(new Noun(36, 'de kaars', 'the candle'));
             words.push(new Verb(36, 'verrassen', 'to surprise'));
             words.push(new Noun(36, 'het cadeau', 'the present'));
-            words.push(new Noun(37, 'het beest', 'the animal, the beast'));
+            words.push(new Noun(37, 'het beest', 'the beast'));
             words.push(new Noun(37, 'de schildpad', 'the turtle'));
             words.push(new Noun(37, 'de hamster', 'the hamster'));
             words.push(new Noun(37, 'de goudvis', 'the goldfish'));
