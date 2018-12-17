@@ -55,13 +55,13 @@
                     if (scoreAllTime) {
 
                         // give me extra work on ones I have missed in the past
-                        numInstances += Math.floor(scoreAllTime.numWrong / 3);
+                        numInstances += Math.ceil(scoreAllTime.numWrong / 3);
 
                     }
 
                     if (viewService.onlyWrong) {
 
-                        if (scoreAllTime && scoreAllTime.numWrong > scoreAllTime.numRight)
+                        if (scoreAllTime && scoreAllTime.numWrong >= scoreAllTime.numRight)
                         {
                             // allow the word
                         }
