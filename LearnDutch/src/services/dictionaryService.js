@@ -536,7 +536,7 @@
             words.push(new Verb(23, 'bouwen', 'to build'));
             words.push(new Verb(23, 'blijven', 'to stay'));
             words.push(new Noun(24, 'het weer', 'the weather'));
-            words.push(new Phrase(24, ['wat voor weer wordt het', 'wat voor weer wordt het'], 'what will be the weather?'));
+            words.push(new Phrase(24, ['wat voor weer wordt het'], 'what will be the weather?'));
             words.push(new Noun(24, 'het weerbericht', 'the weather forecast'));
             words.push(new Noun(24, ['het bericht', 'de boodschap'], 'the message'));
             //            words.push(new Phrase(24, 'lekker weer, hè', 'nice weather isn\'t it'));
@@ -660,7 +660,7 @@
             words.push(new Noun(28, 'de buren', 'the neighbours'));
             words.push(new Verb(28, 'inschrijven', 'to subscribe'));
             words.push(new Noun(28, 'het paspoort', 'the passport'));
-            words.push(new Noun(28, 'het legitimatiebewijs', 'the id'));
+//            words.push(new Noun(28, 'het legitimatiebewijs', 'the id'));
             words.push(new Verb(28, 'zich legitimeren', 'to identify oneself'));
             words.push(new Noun(28, 'het visum', 'the visa'));
             words.push(new Noun(28, 'de identiteitskaart', 'the identity card'));
@@ -726,7 +726,7 @@
             words.push(new Noun(30, 'het glas', 'the glass'));
             words.push(new Noun(30, ['de kop', 'het kopje'], 'the cup'));
             words.push(new Noun(30, ['de fles', 'het flesje'], 'the bottle'));
-            words.push(new Phrase(30, ['smakelijk eten', 'eet smakelijk'], 'enjoy your meal'));
+            words.push(new Phrase(30, ['smakelijk eten', 'eet smakelijk', 'smaak lekker'], 'enjoy your meal'));
             words.push(new Adjective(31, 'vers', 'fresh'));
             words.push(new Noun(31, 'de wortel', 'the carrot'));
             words.push(new Noun(31, 'de boon', 'the bean'));
